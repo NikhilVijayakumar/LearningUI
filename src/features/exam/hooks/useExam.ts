@@ -1,6 +1,7 @@
 //path:- src/features/orgnization/hooks/useOrganization.ts
 import { getQuiz as api } from '../repo/remote/examApi'
 import {
+  QuizTopic,
   ExamState,
   QuizResponse,
   Quiz,
@@ -27,17 +28,17 @@ const useExam = (literal: Record<string, string>) => {
 
 
 
-  useEffect(() => {
-    fetchQuiz()
-  }, [])
+  // useEffect(() => {
+  //   fetchQuiz()
+  // }, [])
 
-  const fetchQuiz = async () => {
+  const fetchQuiz = async (quizdata:QuizTopic) => {
     setAppState((prevState) => ({
       ...prevState,
       state: StateType.LOADING,
     }))
     try {
-      const response = await api(literal)
+      const response = await api(literal,quizdata)
       if (response.isSuccess && response.data) {
         const quizResponse: QuizResponse = response.data
         setAppState((prevState) => ({
@@ -68,7 +69,8 @@ const useExam = (literal: Record<string, string>) => {
     }
   }
   return {
-    appstate,   
+    appstate, 
+    fetchQuiz 
   }
 }
 

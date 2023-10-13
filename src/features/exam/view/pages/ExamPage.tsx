@@ -4,7 +4,7 @@ import { useLanguage } from '../../../../common/localization/LanguageContext'
 
 const ExamPage: React.FC = () => {
   const { literal } = useLanguage()
-  const { appstate, handleCreateClick, handleDeleteClick, handleEditClick } =
+  const { appstate, fetchQuiz } =
     useExam(literal)
 
   return (
@@ -12,9 +12,7 @@ const ExamPage: React.FC = () => {
       <ExamDetails
         appstate={appstate}
         literal={literal}
-        handleCreateClick={handleCreateClick}
-        handleDeleteClick={handleDeleteClick}
-        handleEditClick={handleEditClick}
+        fetchQuiz={fetchQuiz}
       />
     </div>
   )

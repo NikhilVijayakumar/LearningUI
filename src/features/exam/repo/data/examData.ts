@@ -27,3 +27,9 @@ export interface ExamState<Quiz>
   extends AppState<Quiz> {
    
 }
+
+export interface ExamDetailsProps {
+  appstate: ExamState<Quiz>
+  literal: Record<string, string>
+  fetchQuiz: (quizdata: QuizTopic) => Promise<void>
+}
