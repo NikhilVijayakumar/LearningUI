@@ -6,4 +6,5 @@ export enum UrlList {
   LOGIN = '/login',
   EXAM = '/exam',
   TOPIC = '/topic',
+  QUIZ = '/quiz',
 }
