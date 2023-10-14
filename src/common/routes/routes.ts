@@ -7,7 +7,7 @@ const routes = [
   { path: UrlList.LOGIN, element: useRoutes(UrlList.LOGIN) },
   { path: UrlList.HOME, element: useRoutes(UrlList.HOME) },
   { path: UrlList.TOPIC, element: useRoutes(UrlList.TOPIC) },
-  { path: UrlList.QUIZ, element: useRoutes(UrlList.QUIZ) },
+  { path: `${UrlList.QUIZ}/:name/:type`, element: useRoutes(UrlList.QUIZ) },
   { path: `${UrlList.EXAM}/:name/:types`, element: useRoutes(UrlList.EXAM) },
 ]
 

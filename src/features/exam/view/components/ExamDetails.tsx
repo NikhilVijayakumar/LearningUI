@@ -12,10 +12,13 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { ExamDetailsProps } from '../../repo/data/examData'
+import { useNavigate } from "react-router-dom";
+import { UrlList } from '../../../../common/routes/UrlList'
 
 export default function ExamDetails({
-  
-}) {
+  literal
+}:ExamDetailsProps) {
   const { name, types } = useParams();
   const typesArray = types?.split(',') || [];
 
@@ -24,12 +27,10 @@ export default function ExamDetails({
   const handleTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setType(event.target.value);
   };
-  
+  const navigate = useNavigate()
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // send the state to exam.php or any other logic
-    // console.log({topic, type, mode});
-    // fetchQuiz(topic, type, mode); // call the fetchQuiz function with the selected topic, type, and mode
+    navigate(`${UrlList.QUIZ}/${name}/${type}`);
   };
 
   return (
@@ -43,7 +44,7 @@ export default function ExamDetails({
       }}
     >
       <Typography variant="h4" align="center" sx={{ color: '#333333' }}>
-      Skill Sage 
+      {literal['app_name']}
       </Typography>
       <form onSubmit={handleSubmit}>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -70,7 +71,7 @@ export default function ExamDetails({
             </RadioGroup>
           </FormControl>
           <Button type="submit" variant="contained" sx={{ width: '200px', height: '50px', margin: '10px' }}>
-            Start Exam
+          {literal['start_exam']}          
           </Button>
         </Box>
       </form>
