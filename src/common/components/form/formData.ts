@@ -1,6 +1,6 @@
 //path src/common/components/form/formData.ts
 
-import  { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs'
 
 export interface EmailState {
   email: string
@@ -27,5 +27,5 @@ export type Date = Dayjs | null
 export interface DateComponentProps {
   label: string
   date: string
-  onDateUpdate: (date:Date ) => void
+  onDateUpdate: (date: Date) => void
 }

@@ -7,9 +7,5 @@ import URL from '../../../../common/repo/ApiUrl'
 export const getTopic = async (
   literal: Record<string, string>,
 ): Promise<ServerResponse<TopicResponse>> => {
-  return ApiService.getInstance(literal).get<TopicResponse>(
-    URL.TOPICS_ENDPOINT,
-  )
+  return ApiService.getInstance(literal).get<TopicResponse>(URL.TOPICS_ENDPOINT)
 }
-
-

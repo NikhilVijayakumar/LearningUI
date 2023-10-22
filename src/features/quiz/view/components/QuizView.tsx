@@ -1,145 +1,165 @@
 //path src\features\quiz\view\components\QuizView.tsx
 
-import React, { useState, useEffect } from 'react';
-import {
-  Box,
-  Typography,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  FormControl,
-  FormLabel,
-  Button,
-  Paper,
-} from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { useState, useEffect, ChangeEvent } from 'react'
+import { Box, Paper } from '@mui/material'
+import { useParams } from 'react-router-dom'
+import { QuizViewProps, QuizTopic, Quiz } from '../../repo/data/quizData'
+import { StateType } from '../../../../common/repo/AppState'
+import Alert from '@mui/material/Alert'
+import CircularProgress from '@mui/material/CircularProgress'
+import Radio from '@mui/material/Radio'
+import RadioGroup from '@mui/material/RadioGroup'
+import FormControlLabel from '@mui/material/FormControlLabel'
 
-export default function QuizView()  {
-  const [questions, setQuestions] = useState([]);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState('');
-  const [correctAnswers, setCorrectAnswers] = useState(0);
-  const [quizCompleted, setQuizCompleted] = useState(false);
+export default function QuizView({
+  appstate,
+  literal,
+  fetchQuiz,
+}: QuizViewProps) {
+  //const [quiz, setQuiz] = useState<Quiz>([])
+  // const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+  //const [selectedAnswer, setSelectedAnswer] = useState('')
+  //const [correctAnswers, setCorrectAnswers] = useState(0)
+  //const [quizCompleted, setQuizCompleted] = useState(false)
 
-  const { name, type } = useParams();
-  console.log('name', name);
-  console.log('type', type);
-  return <>
-  Quiz View
-  </>
+  const [renderedContent, setRenderedContent] = useState<JSX.Element | null>(
+    null,
+  )
 
-  // useEffect(() => {
-  //   // Simulate fetching quiz questions from an API
-  //   // Replace this with your actual API request
-  //   const fetchQuizQuestions = async () => {
-  //     try {
-  //       const response = await fetch('API_ENDPOINT_HERE');
-  //       const data = await response.json();
-  //       setQuestions(data.data['Chapter 1']); // Load questions from a specific chapter
-  //     } catch (error) {
-  //       console.error('Error fetching quiz questions:', error);
-  //     }
-  //   };
+  let quiz: Quiz = []
+  let currentQuestionIndex = 0
+  let selectedAnswer = ''
+  let correctAnswers = 0
+  let quizCompleted = false
 
-  //   fetchQuizQuestions();
-  // }, []);
+  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    selectedAnswer = (event.target as HTMLInputElement).value
+  }
 
-  // const handleAnswerChange = (event) => {
-  //   setSelectedAnswer(event.target.value);
-  // };
+  const handleSubmit = () => {
+    if (selectedAnswer === quiz[currentQuestionIndex].question.correct_answer) {
+      correctAnswers = correctAnswers + 1
+    }
 
-  // const handleSubmit = () => {
-  //   if (selectedAnswer === questions[currentQuestionIndex].correct_answer) {
-  //     setCorrectAnswers(correctAnswers + 1);
-  //   }
+    if (currentQuestionIndex < quiz.length - 1) {
+      currentQuestionIndex = currentQuestionIndex + 1
+      selectedAnswer = ''
+      updateQuiz()
+    } else {
+      quizCompleted = true
+      updateQuiz()
+    }
+  }
 
-  //   if (currentQuestionIndex < questions.length - 1) {
-  //     setCurrentQuestionIndex(currentQuestionIndex + 1);
-  //     setSelectedAnswer('');
-  //   } else {
-  //     setQuizCompleted(true);
-  //   }
-  // };
+  const handleRestart = () => {
+    currentQuestionIndex = 0
+    selectedAnswer = ''
+    correctAnswers = 0
+    quizCompleted = false
+    updateQuiz()
+  }
 
-  // const handleRestart = () => {
-  //   setCurrentQuestionIndex(0);
-  //   setSelectedAnswer('');
-  //   setCorrectAnswers(0);
-  //   setQuizCompleted(false);
-  // };
+  const updateQuiz = () => {
+    setRenderedContent(
+      <Box
+        sx={{
+          width: '800px',
+          margin: '0 auto',
+          padding: '20px',
+          backgroundColor: 'white',
+          boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+        }}
+      >
+        {quizCompleted ? (
+          <div>
+            <p>Quiz Completed</p>
+            <p>Your score: {calculatePercentage()}%</p>
+            <button onClick={handleRestart}>Restart Quiz</button>
+          </div>
+        ) : (
+          <div>
+            <p>{quiz[currentQuestionIndex].question.question}</p>
+            <RadioGroup
+              aria-labelledby="demo-error-radios"
+              name="quiz"
+              onChange={handleRadioChange}
+            >
+              {quiz[currentQuestionIndex].question.options.map((option, i) => (
+                <FormControlLabel
+                  key={i}
+                  value={option}
+                  control={<Radio />}
+                  label={option}
+                />
+              ))}
+            </RadioGroup>
+            <button onClick={handleSubmit}>Next Question</button>
+          </div>
+        )}
+      </Box>,
+    )
+  }
 
-  // const calculatePercentage = () => {
-  //   return ((correctAnswers / questions.length) * 100).toFixed(2);
-  // };
+  const calculatePercentage = () => {
+    return ((correctAnswers / quiz.length) * 100).toFixed(2)
+  }
 
-  // return (
-  //   <Box
-  //     sx={{
-  //       width: '800px',
-  //       margin: '0 auto',
-  //       padding: '20px',
-  //       backgroundColor: 'white',
-  //       boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-  //     }}
-  //   >
-  //     <Typography variant="h4" align="center" sx={{ color: '#333333' }}>
-  //       Quiz Question
-  //     </Typography>
-  //     {quizCompleted ? (
-  //       <Paper elevation={3} sx={{ padding: '16px', margin: '16px 0' }}>
-  //         <Typography variant="h6" color="primary">
-  //           Quiz Completed
-  //         </Typography>
-  //         <Typography variant="body1" sx={{ marginTop: '16px' }}>
-  //           You answered {correctAnswers} out of {questions.length} questions correctly.
-  //         </Typography>
-  //         <Typography variant="body1" sx={{ marginTop: '8px' }}>
-  //           Your score: {calculatePercentage()}%
-  //         </Typography>
-  //         <Button
-  //           variant="contained"
-  //           color="primary"
-  //           onClick={handleRestart}
-  //           sx={{ marginTop: '16px' }}
-  //         >
-  //           Restart Quiz
-  //         </Button>
-  //       </Paper>
-  //     ) : (
-  //       <Paper elevation={3} sx={{ padding: '16px', margin: '16px 0' }}>
-  //         <Typography variant="h6" color="primary">
-  //           {questions[currentQuestionIndex].question}
-  //         </Typography>
-  //         <FormControl component="fieldset">
-  //           <FormLabel component="legend">Select an answer:</FormLabel>
-  //           <RadioGroup
-  //             aria-label="answer"
-  //             name="answer"
-  //             value={selectedAnswer}
-  //             onChange={handleAnswerChange}
-  //           >
-  //             {questions[currentQuestionIndex].options.map((option, index) => (
-  //               <FormControlLabel
-  //                 key={index}
-  //                 value={option}
-  //                 control={<Radio />}
-  //                 label={option}
-  //               />
-  //             ))}
-  //           </RadioGroup>
-  //         </FormControl>
-  //         <Button
-  //           variant="contained"
-  //           color="primary"
-  //           onClick={handleSubmit}
-  //           sx={{ marginTop: '16px' }}
-  //         >
-  //           Next Question
-  //         </Button>
-  //       </Paper>
-  //     )}
-  //   </Box>
-  // );
-};
+  const { name, type } = useParams()
 
-
+  if (name == null || type == null) {
+    setRenderedContent(
+      <Paper>
+        <Alert severity="error">Something went wrong</Alert>
+      </Paper>,
+    )
+  } else {
+    const topic: QuizTopic = {
+      name,
+      type,
+    }
+    useEffect(() => {
+      let quizData = appstate.data
+      if (appstate.state == StateType.INIT) {
+        fetchQuiz(topic)
+      } else if (appstate.state == StateType.LOADING) {
+        setRenderedContent(<CircularProgress />)
+      } else if (
+        appstate.state == StateType.COMPLETED &&
+        appstate.isSuccess &&
+        quizData == null
+      ) {
+        setRenderedContent(
+          <Paper>
+            <Alert severity="warning">No List found</Alert>
+          </Paper>,
+        )
+      }
+      if (appstate.isError) {
+        setRenderedContent(
+          <Paper>
+            <Alert severity="error">{appstate.statusMessage}</Alert>
+          </Paper>,
+        )
+      } else if (
+        appstate.isSuccess &&
+        appstate.state == StateType.COMPLETED &&
+        quizData != null
+      ) {
+        quiz = quizData
+        updateQuiz()
+      } else {
+        setRenderedContent(
+          <Paper>
+            <Alert severity="error">Something went wrong</Alert>
+          </Paper>,
+        )
+      }
+    }, [
+      appstate.state,
+      appstate.data,
+      appstate.isError,
+      appstate.statusMessage,
+    ])
+  }
+  return <>{renderedContent}</>
+}

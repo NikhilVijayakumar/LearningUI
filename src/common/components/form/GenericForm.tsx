@@ -61,7 +61,7 @@ const GenericForm = <T extends TableDataItem>({
           key={header.key}
           label={header.label}
           variant="standard"
-          type="text"         
+          type="text"
           name={header.key}
           value={formdata[header.key as keyof T] as unknown as string}
           onChange={(e) => setData(e, header.key)}

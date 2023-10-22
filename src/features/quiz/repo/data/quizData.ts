@@ -1,32 +1,39 @@
-//path src/features/organization/repo/data/organizationData.ts
+//path src/features/quiz/repo/data/quizData.ts
+
 import { AppState } from '../../../../common/repo/AppState'
-import {Topic} from '../../../topic/repo/data/topicData'
 
-
-export interface QuestionOption {
-  correct_answer: string;
-  options: string[];
-  question: string;
+export interface QueryInfo {
+  chaptername: string
+  question: Query
 }
 
-export type QuizTopic = Topic;
+export type Quiz = QueryInfo[]
 
-export interface Quiz{
-  [chapterName: string]: QuestionOption[];
+export interface Query {
+  correct_answer: string
+  options: string[]
+  question: string
+}
+
+//export type QuizTopic = Topic;
+
+export interface QuizTopic {
+  name: string
+  type: string
+}
+
+export interface QuizRequest {
+  topic: string
+  type: string
 }
 
 // Define the root data structure
 export interface QuizResponse {
-  data: {
-    quiz:Quiz
-  };
-  status: string;
+  data: Quiz
+  status: string
 }
 
-export interface QuizState<Quiz>
-  extends AppState<Quiz> {
-   
-}
+export interface QuizState<Quiz> extends AppState<Quiz> {}
 
 export interface QuizViewProps {
   appstate: QuizState<Quiz>

@@ -4,16 +4,11 @@ import { useLanguage } from '../../../../common/localization/LanguageContext'
 
 const TopicListPage: React.FC = () => {
   const { literal } = useLanguage()
-  const { appstate,gotoExam } =
-    useTopic(literal)
+  const { appstate, gotoExam } = useTopic(literal)
 
   return (
     <div>
-      <TopicList
-        appstate={appstate}
-        literal={literal}   
-        gotoExam={gotoExam}    
-      />
+      <TopicList appstate={appstate} literal={literal} gotoExam={gotoExam} />
     </div>
   )
 }

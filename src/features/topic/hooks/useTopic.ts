@@ -1,33 +1,29 @@
 //path:- src/features/orgnization/hooks/useOrganization.ts
 import { getTopic as api } from '../repo/remote/topicApi'
 import {
-  TopicResponse,TopicList,TopicListState,Topic
+  TopicResponse,
+  TopicList,
+  TopicListState,
+  Topic,
 } from '../repo/data/topicData'
 import { useState, useEffect } from 'react'
 import { HttpStatusCode } from '../../../common/repo/HttpStatusCode'
 import { StateType } from '../../../common/repo/AppState'
 import useStatusMessage from '../../../common/repo/useStatusMessage'
-import {
-  EventType,
-} from '../../../common/components/list/EventType'
-
+import { EventType } from '../../../common/components/list/EventType'
 
 const useTopic = (literal: Record<string, string>) => {
-
-
-  const [appstate, setAppState] = useState<
-  TopicListState<TopicList>
-  >({
+  const [appstate, setAppState] = useState<TopicListState<TopicList>>({
     state: StateType.INIT,
     isError: false,
     isSuccess: false,
     status: HttpStatusCode.IDLE,
     statusMessage: '',
-    data: null,   
-    event: EventType.IDLE, 
+    data: null,
+    event: EventType.IDLE,
   })
 
-  const gotoExam = (topic:Topic) => {
+  const gotoExam = (topic: Topic) => {
     setAppState((prevState) => ({
       ...prevState,
       selectedData: topic,
@@ -35,7 +31,6 @@ const useTopic = (literal: Record<string, string>) => {
     }))
   }
 
-  
   useEffect(() => {
     fetchTopics()
   }, [])
@@ -77,8 +72,8 @@ const useTopic = (literal: Record<string, string>) => {
     }
   }
   return {
-    appstate ,
-    gotoExam  
+    appstate,
+    gotoExam,
   }
 }
 

@@ -16,8 +16,8 @@
   "idle_message": "Idle state.",
   "unknown_message": "Unknown status.",
   "default_home_title": "Home",
- "app_name": "Skill Sage",
- "start_exam": "Start Exam",
+  "app_name": "Skill Sage",
+  "start_exam": "Start Exam",
   "save": "Save",
   "cancel": "Cancel"
 }

@@ -1,4 +1,3 @@
-
 //path src\features\organization\view\components\OrganizarionList.tsx
 import {
   Box,
@@ -9,29 +8,27 @@ import {
   FormControl,
   FormLabel,
   Button,
-} from '@mui/material';
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+} from '@mui/material'
+import { useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { ExamDetailsProps } from '../../repo/data/examData'
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom'
 import { UrlList } from '../../../../common/routes/UrlList'
 
-export default function ExamDetails({
-  literal
-}:ExamDetailsProps) {
-  const { name, types } = useParams();
-  const typesArray = types?.split(',') || [];
+export default function ExamDetails({ literal }: ExamDetailsProps) {
+  const { name, types } = useParams()
+  const typesArray = types?.split(',') || []
 
-  const [type, setType] = useState(typesArray[0] || '');
+  const [type, setType] = useState(typesArray[0] || '')
 
   const handleTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setType(event.target.value);
-  };
+    setType(event.target.value)
+  }
   const navigate = useNavigate()
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    navigate(`${UrlList.QUIZ}/${name}/${type}`);
-  };
+    event.preventDefault()
+    navigate(`${UrlList.QUIZ}/${name}/${type}`)
+  }
 
   return (
     <Box
@@ -44,10 +41,16 @@ export default function ExamDetails({
       }}
     >
       <Typography variant="h4" align="center" sx={{ color: '#333333' }}>
-      {literal['app_name']}
+        {literal['app_name']}
       </Typography>
       <form onSubmit={handleSubmit}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
           <FormControl sx={{ margin: '10px' }} component="fieldset">
             <FormLabel component="legend">{name}</FormLabel>
           </FormControl>
@@ -70,13 +73,15 @@ export default function ExamDetails({
               ))}
             </RadioGroup>
           </FormControl>
-          <Button type="submit" variant="contained" sx={{ width: '200px', height: '50px', margin: '10px' }}>
-          {literal['start_exam']}          
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{ width: '200px', height: '50px', margin: '10px' }}
+          >
+            {literal['start_exam']}
           </Button>
         </Box>
       </form>
     </Box>
-  );
+  )
 }
-
-
