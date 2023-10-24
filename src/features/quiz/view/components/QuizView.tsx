@@ -45,7 +45,7 @@ export default function QuizView({
         ) : null}
         {appstate.eventType == EventType.COMPLETED ? (
           <div>
-            <Typography variant="h4" align="center" sx={{ color: '#333333' }}>
+            <Typography variant="h3" align="center" sx={{ color: '#333333' }}>
               <img
                 src={resultIcon} 
                 alt="Exam Icon"
@@ -54,14 +54,14 @@ export default function QuizView({
               />
               {literal['result']}
             </Typography>
-            <Typography variant="h5" align="center" sx={{ color: '#333333' }}>
+            <Typography variant="h4" align="center" sx={{ color: '#333333' }}>
               {literal['score']} {calculatePercentage()} %
             </Typography>
             <button onClick={handleRestart}>{literal['restart_exam']}</button>
           </div>
         ) : (
           <div>
-            <Typography variant="h4" align="center" sx={{ color: '#333333' }}>
+            <Typography variant="h2" align="center" sx={{ color: '#333333' }}>
               <img
                 src={quizIcon} 
                 alt="Quiz Icon"
@@ -70,9 +70,10 @@ export default function QuizView({
               />
               {literal['quiz']}
             </Typography>
-            <p>
-              {appstate.quiz[appstate.currentQuestionIndex].question.question}
-            </p>
+            <Typography variant="h4" align="center" sx={{ color: '#333333' }}>
+            {appstate.currentQuestionIndex+1} . {appstate.quiz[appstate.currentQuestionIndex].question.question}
+            </Typography>
+           
             <RadioGroup
               aria-labelledby="radio-group-question"
               name="quiz"

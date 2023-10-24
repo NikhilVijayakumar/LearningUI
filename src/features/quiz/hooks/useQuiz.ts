@@ -37,6 +37,7 @@ const useQuiz = (literal: Record<string, string>) => {
   }
 
   const handleSubmit = () => {
+    let answer = appstate.correctAnswers 
     if (appstate.selectedAnswer === '') {
       setAppState((prevState) => ({
         ...prevState,
@@ -48,12 +49,8 @@ const useQuiz = (literal: Record<string, string>) => {
     if (
       appstate.selectedAnswer ===
       appstate.quiz[appstate.currentQuestionIndex].question.correct_answer
-    ) {
-      let answer = appstate.correctAnswers + 1
-      setAppState((prevState) => ({
-        ...prevState,
-        correctAnswers: answer,
-      }))
+    ) {      
+      answer++
     }
 
     if (appstate.currentQuestionIndex < appstate.quiz.length - 1) {
@@ -61,6 +58,7 @@ const useQuiz = (literal: Record<string, string>) => {
       appstate.selectedAnswer = ''
       setAppState((prevState) => ({
         ...prevState,
+        correctAnswers :answer,
         selectedAnswer: '',
         validationError: false,
         eventType: EventType.NEXT,
@@ -68,6 +66,7 @@ const useQuiz = (literal: Record<string, string>) => {
     } else {
       setAppState((prevState) => ({
         ...prevState,
+        correctAnswers :answer,
         validationError: false,
         eventType: EventType.COMPLETED,
       }))
