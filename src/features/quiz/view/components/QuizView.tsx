@@ -14,6 +14,7 @@ import { EventType } from '../../../../common/utils/EventType'
 import quizIcon from '../../../../assets/quiz_icon.png'
 import resultIcon from '../../../../assets/result_icon.png'
 import { shuffleArray } from '../../../../common/utils/arrayUtils'
+import { MarksList } from '../../../../common/components/list/MarkList'
 
 export default function QuizView({
   appstate,
@@ -44,17 +45,20 @@ export default function QuizView({
           </Box>
         ) : null}
         {appstate.eventType == EventType.COMPLETED ? (
-          <div>
-            <Typography variant="h3" align="center" sx={{ color: '#333333' }}>
-              <img src={resultIcon} alt="Exam Icon" width="96" height="96" />
-              {literal['result']}
-            </Typography>
-            <Typography variant="h4" align="center" sx={{ color: '#333333' }}>
-              {literal['score']} {appstate.correctAnswers} /{' '}
-              {appstate.quiz.length} = {calculatePercentage()} %
-            </Typography>
-            <button onClick={handleRestart}>{literal['restart_exam']}</button>
-          </div>
+          <Box>
+            <div>
+              <Typography variant="h3" align="center" sx={{ color: '#333333' }}>
+                <img src={resultIcon} alt="Exam Icon" width="96" height="96" />
+                {literal['result']}
+              </Typography>
+              <Typography variant="h4" align="center" sx={{ color: '#333333' }}>
+                {literal['score']} {appstate.correctAnswers} /{' '}
+                {appstate.quiz.length} = {calculatePercentage()} %
+              </Typography>
+              <button onClick={handleRestart}>{literal['restart_exam']}</button>
+            </div>
+            <MarksList data={appstate.chapterResults} />
+          </Box>
         ) : (
           <div>
             <Typography variant="h2" align="center" sx={{ color: '#333333' }}>

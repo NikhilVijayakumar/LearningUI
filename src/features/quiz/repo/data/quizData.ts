@@ -2,6 +2,7 @@
 
 import { AppState } from '../../../../common/utils/AppState'
 import { EventType } from '../../../../common/utils/EventType'
+import { MarkResult } from '../../../../common/components/list/MarkListData'
 
 export interface QueryInfo {
   chaptername: string
@@ -15,12 +16,7 @@ export interface Query {
 }
 
 export type Quiz = QueryInfo[]
-
-type ChapterResult = {
-  chapterName: string
-  totalQuestions: number
-  correctAnswers: number
-}
+export type ChapterResult = MarkResult
 
 export interface QuizTopic {
   name: string
