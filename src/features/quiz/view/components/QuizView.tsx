@@ -3,66 +3,27 @@
 import { useState, useEffect } from 'react'
 import { Box, Paper } from '@mui/material'
 import { useParams } from 'react-router-dom'
-import { QuizViewProps, QuizTopic, Quiz,QuizInfo } from '../../repo/data/quizData'
+import { QuizViewProps, QuizTopic} from '../../repo/data/quizData'
 import { StateType } from '../../../../common/repo/AppState'
 import Alert from '@mui/material/Alert'
 import CircularProgress from '@mui/material/CircularProgress'
 import Radio from '@mui/material/Radio'
 import RadioGroup from '@mui/material/RadioGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
+import { EventType } from '../../../../common/components/list/EventType'
 
 export default function QuizView({
   appstate,
   literal,
   fetchQuiz,
+  handleRadioChange,
+  handleRestart,
+  handleSubmit,
 }: QuizViewProps) {
 
   const [renderedContent, setRenderedContent] = useState<JSX.Element | null>(
     null,
-  )
-
-  const info: QuizInfo = {
-    quiz: [], 
-    currentQuestionIndex: 0, 
-    selectedAnswer: '', 
-    correctAnswers: 0, 
-    quizCompleted: false, 
-    chapterResults: [], 
-    validationError:false
-  };
-
-  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    info.selectedAnswer = (event.target as HTMLInputElement).value
-  }
-
-  const handleSubmit = () => {
-    if (info.selectedAnswer === '') {
-      info.validationError = true
-      updateQuiz()
-      return
-    }
-    info.validationError = false
-    if (info.selectedAnswer === info.quiz[info.currentQuestionIndex].question.correct_answer) {
-      info.correctAnswers = info.correctAnswers + 1
-    }
-
-    if (info.currentQuestionIndex < info.quiz.length - 1) {
-      info.currentQuestionIndex = info.currentQuestionIndex + 1
-      info.selectedAnswer = ''
-      updateQuiz()
-    } else {
-      info.quizCompleted = true
-      updateQuiz()
-    }
-  }
-
-  const handleRestart = () => {
-    info.currentQuestionIndex = 0
-    info.selectedAnswer = ''
-    info.correctAnswers = 0
-    info.quizCompleted = false
-    updateQuiz()
-  }
+  )  
 
   const updateQuiz = () => {
     setRenderedContent(
@@ -75,12 +36,12 @@ export default function QuizView({
           boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
         }}
       >
-        {info.validationError ? (
+        {appstate.validationError ? (
         <Box>
           <Alert severity="error">Please select an option</Alert>
         </Box>):null}
 
-        {info.quizCompleted ? (
+        {appstate.eventType == EventType.COMPLETED ? (
           <div>
             <p>Quiz Completed</p>
             <p>Your score: {calculatePercentage()}%</p>
@@ -88,13 +49,13 @@ export default function QuizView({
           </div>
         ) : (
           <div>
-            <p>{info.quiz[info.currentQuestionIndex].question.question}</p>
+            <p>{appstate.quiz[appstate.currentQuestionIndex].question.question}</p>
             <RadioGroup
               aria-labelledby="radio-group-question"
               name="quiz"
               onChange={handleRadioChange}
             >
-              {info.quiz[info.currentQuestionIndex].question.options.map((option, i) => (
+              {appstate.quiz[appstate.currentQuestionIndex].question.options.map((option, i) => (
                 <FormControlLabel
                   key={i}
                   value={option}
@@ -111,7 +72,7 @@ export default function QuizView({
   }
 
   const calculatePercentage = () => {
-    return ((info.correctAnswers / info.quiz.length) * 100).toFixed(2)
+    return ((appstate.correctAnswers / appstate.quiz.length) * 100).toFixed(2)
   }
 
   const { name, type } = useParams()
@@ -127,16 +88,14 @@ export default function QuizView({
       name,
       type,
     }
-    useEffect(() => {
-      let quizData = appstate.data
+    useEffect(() => {      
       if (appstate.state == StateType.INIT) {
         fetchQuiz(topic)
       } else if (appstate.state == StateType.LOADING) {
         setRenderedContent(<CircularProgress />)
       } else if (
         appstate.state == StateType.COMPLETED &&
-        appstate.isSuccess &&
-        quizData == null
+        appstate.isSuccess && appstate.quiz.length == 0       
       ) {
         setRenderedContent(
           <Paper>
@@ -151,11 +110,8 @@ export default function QuizView({
           </Paper>,
         )
       } else if (
-        appstate.isSuccess &&
-        appstate.state == StateType.COMPLETED &&
-        quizData != null
-      ) {
-        info.quiz = quizData
+        appstate.eventType == EventType.NEXT
+      ) {      
         updateQuiz()
       } else {
         setRenderedContent(
@@ -169,6 +125,11 @@ export default function QuizView({
       appstate.data,
       appstate.isError,
       appstate.statusMessage,
+      appstate.eventType,
+      appstate.currentQuestionIndex,
+      appstate.validationError,
+      appstate.correctAnswers,
+      appstate.quiz,      
     ])
   }
   return <>{renderedContent}</>

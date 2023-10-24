@@ -4,4 +4,5 @@ export enum EventType {
   NEXT = 2,
   PREVIOUS = 3,
   CANCEL = 4,
+  COMPLETED = 5,
 }

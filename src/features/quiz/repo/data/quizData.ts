@@ -1,6 +1,8 @@
 //path src/features/quiz/repo/data/quizData.ts
 
 import { AppState } from '../../../../common/repo/AppState'
+import { EventType } from '../../../../common/components/list/EventType'
+
 
 export interface QueryInfo {
   chaptername: string
@@ -9,15 +11,7 @@ export interface QueryInfo {
 
 export type Quiz = QueryInfo[]
 
-export type QuizInfo = {
-  validationError: boolean;
-  quiz: Quiz;
-  currentQuestionIndex: number;
-  selectedAnswer: string;
-  correctAnswers: number;
-  quizCompleted: boolean;
-  chapterResults: ChapterResult[];
-};
+
 
 type ChapterResult = {
   chapterName: string;
@@ -49,10 +43,21 @@ export interface QuizResponse {
   status: string
 }
 
-export interface QuizState<Quiz> extends AppState<Quiz> {}
+export interface QuizState<Quiz> extends AppState<Quiz> {
+  validationError: boolean;
+  quiz: Quiz;
+  currentQuestionIndex: number;
+  selectedAnswer: string;
+  correctAnswers: number; 
+  chapterResults: ChapterResult[];
+  eventType: EventType;
+}
 
 export interface QuizViewProps {
   appstate: QuizState<Quiz>
   literal: Record<string, string>
   fetchQuiz: (quizdata: QuizTopic) => Promise<void>
+  handleRadioChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  handleSubmit: () => void
+  handleRestart: () => void
 }

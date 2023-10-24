@@ -12,6 +12,7 @@ import { useState } from 'react'
 import { HttpStatusCode } from '../../../common/repo/HttpStatusCode'
 import { StateType } from '../../../common/repo/AppState'
 import useStatusMessage from '../../../common/repo/useStatusMessage'
+import { EventType } from '../../../common/components/list/EventType'
 
 const useQuiz = (literal: Record<string, string>) => {
   const [appstate, setAppState] = useState<QuizState<Quiz>>({
@@ -20,8 +21,70 @@ const useQuiz = (literal: Record<string, string>) => {
     isSuccess: false,
     status: HttpStatusCode.IDLE,
     statusMessage: '',
-    data: null,
+    data: null,    
+    validationError: false,
+    quiz: [],
+    currentQuestionIndex: 0,
+    selectedAnswer: '',
+    correctAnswers: 0,   
+    chapterResults: [],
+    eventType: EventType.IDLE,
+   
   })
+
+  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    appstate.selectedAnswer = (event.target as HTMLInputElement).value
+  }
+
+  const handleSubmit = () => {
+    if (appstate.selectedAnswer === '') {     
+      setAppState((prevState) => ({
+        ...prevState,
+       validationError: true,
+      eventType: EventType.NEXT,
+      }))
+      return
+    }   
+    if (appstate.selectedAnswer === appstate.quiz[appstate.currentQuestionIndex].question.correct_answer) {
+     let answer = appstate.correctAnswers + 1
+      setAppState((prevState) => ({
+        ...prevState,
+        correctAnswers: answer      
+      }))
+    }
+
+    if (appstate.currentQuestionIndex < appstate.quiz.length - 1) {
+      appstate.currentQuestionIndex = appstate.currentQuestionIndex + 1
+      appstate.selectedAnswer = ''
+      setAppState((prevState) => ({
+        ...prevState,
+        selectedAnswer: '',
+       validationError: false,
+      eventType: EventType.NEXT,
+      }))
+    } else {    
+      setAppState((prevState) => ({
+        ...prevState,
+        validationError: false,
+        eventType: EventType.COMPLETED,   
+      }))
+    }
+  }
+
+  const handleRestart = () => {
+    appstate.currentQuestionIndex = 0
+    appstate.selectedAnswer = ''
+    appstate.correctAnswers = 0   
+    setAppState((prevState) => ({
+      ...prevState,
+      validationError: false,
+      currentQuestionIndex: 0,
+      selectedAnswer: '',
+      correctAnswers: 0, 
+      chapterResults: [],
+    eventType: EventType.NEXT,
+    }))
+  }
 
   const fetchQuiz = async (quizdata: QuizTopic) => {
     setAppState((prevState) => ({
@@ -41,7 +104,9 @@ const useQuiz = (literal: Record<string, string>) => {
           status: response.status,
           statusMessage: useStatusMessage(response.status, literal),
           data: quizResponse.data,
-        }))
+          quiz: quizResponse.data,
+          eventType: EventType.NEXT,
+        }))  
       } else {
         setAppState((prevState) => ({
           ...prevState,
@@ -64,6 +129,9 @@ const useQuiz = (literal: Record<string, string>) => {
   return {
     appstate,
     fetchQuiz,
+    handleRadioChange,
+    handleSubmit,
+    handleRestart
   }
 }
 
