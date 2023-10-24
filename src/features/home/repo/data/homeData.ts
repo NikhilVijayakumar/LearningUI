@@ -8,7 +8,7 @@ import ComponentTypeIcon from '@mui/icons-material/Cable'
 import ComponentIcon from '@mui/icons-material/ElectricalServices'
 import SensorTypeIcon from '@mui/icons-material/EdgesensorHigh'
 import SensorIcon from '@mui/icons-material/Sensors'
-import { AppState } from '../../../../common/repo/AppState'
+import { AppState } from '../../../../common/utils/AppState.ts'
 import {
   UiFeature,
   Features,

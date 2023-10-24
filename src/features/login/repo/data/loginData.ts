@@ -1,6 +1,6 @@
 // src/features/login/store/types/loginTypes.ts
 
-import { AppState } from '../../../../common/repo/AppState'
+import { AppState } from '../../../../common/utils/AppState'
 import {
   EmailState,
   PasswordState,

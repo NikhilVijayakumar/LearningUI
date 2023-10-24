@@ -41,13 +41,12 @@ export default function ExamDetails({ literal }: ExamDetailsProps) {
         boxShadow: '0 0 10px rgba(0,0,0,0.1)',
       }}
     >
-        
-      <Typography variant="h4" align="center" sx={{ color: '#333333' }}>        
-        <img        
-          src={examIcon} // Reference your image here
+      <Typography variant="h4" align="center" sx={{ color: '#333333' }}>
+        <img
+          src={examIcon} 
           alt="Exam Icon"
-          width="96" // Set the width of the image as needed
-          height="96" // Set the height of the image as needed
+          width="96"
+          height="96" 
         />
         {literal['app_name']}
       </Typography>
@@ -63,7 +62,10 @@ export default function ExamDetails({ literal }: ExamDetailsProps) {
             <FormLabel component="legend">{name}</FormLabel>
           </FormControl>
           <FormControl sx={{ margin: '10px' }} component="fieldset">
-            <FormLabel component="legend"> {literal['select_exam_type']}</FormLabel>
+            <FormLabel component="legend">
+              {' '}
+              {literal['select_exam_type']}
+            </FormLabel>
             <RadioGroup
               row
               aria-label="type"

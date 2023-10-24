@@ -8,7 +8,7 @@ import {
 } from '../repo/data/loginData'
 import { useState } from 'react'
 import { HttpStatusCode } from '../../../common/repo/HttpStatusCode'
-import { StateType } from '../../../common/repo/AppState'
+import { StateType } from '../../../common/utils/AppState'
 import useStatusMessage from '../../../common/repo/useStatusMessage'
 
 const useLogin = (literal: Record<string, string>) => {

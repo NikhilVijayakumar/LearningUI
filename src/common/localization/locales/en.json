@@ -23,12 +23,11 @@
   "option_error": "Please select an option.",
   "next_question": "Next Question",
   "restart_exam": "Restart Exam",
-  "internal_error" : "Internal server error. Please try again later.",
+  "internal_error": "Internal server error. Please try again later.",
   "no_questions": "No questions found.",
   "select_exam_type": "Select an exam type to start",
   "quiz": "Quiz",
   "result": "Result",
-  "score": "Your score:"
-
-
+  "score": "Your score:",
+  "topic_list": "Topic List"
 }

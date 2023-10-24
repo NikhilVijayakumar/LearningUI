@@ -4,7 +4,7 @@ import { homeApi as api } from '../repo/remote/homeApi'
 import { HomeResponse, HomeState } from '../repo/data/homeData'
 import { useState, useEffect } from 'react'
 import { HttpStatusCode } from '../../../common/repo/HttpStatusCode'
-import { StateType } from '../../../common/repo/AppState'
+import { StateType } from '../../../common/utils/AppState'
 import useStatusMessage from '../../../common/repo/useStatusMessage'
 
 const useHome = (literal: Record<string, string>) => {

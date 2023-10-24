@@ -1,4 +1,4 @@
-import { HttpStatusCode } from './HttpStatusCode'
+import { HttpStatusCode } from '../repo/HttpStatusCode'
 
 export enum StateType {
   INIT = 0,

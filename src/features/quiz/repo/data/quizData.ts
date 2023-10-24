@@ -1,23 +1,12 @@
 //path src/features/quiz/repo/data/quizData.ts
 
-import { AppState } from '../../../../common/repo/AppState'
-import { EventType } from '../../../../common/components/list/EventType'
-
+import { AppState } from '../../../../common/utils/AppState'
+import { EventType } from '../../../../common/utils/EventType'
 
 export interface QueryInfo {
   chaptername: string
   question: Query
 }
-
-export type Quiz = QueryInfo[]
-
-
-
-type ChapterResult = {
-  chapterName: string;
-  totalQuestions: number;
-  correctAnswers: number;
-};
 
 export interface Query {
   correct_answer: string
@@ -25,7 +14,17 @@ export interface Query {
   question: string
 }
 
-//export type QuizTopic = Topic;
+export type Quiz = QueryInfo[]
+
+type ChapterResult = {
+  chapterName: string
+  totalQuestions: number
+  correctAnswers: number
+}
+
+
+
+
 
 export interface QuizTopic {
   name: string
@@ -44,13 +43,13 @@ export interface QuizResponse {
 }
 
 export interface QuizState<Quiz> extends AppState<Quiz> {
-  validationError: boolean;
-  quiz: Quiz;
-  currentQuestionIndex: number;
-  selectedAnswer: string;
-  correctAnswers: number; 
-  chapterResults: ChapterResult[];
-  eventType: EventType;
+  validationError: boolean
+  quiz: Quiz
+  currentQuestionIndex: number
+  selectedAnswer: string
+  correctAnswers: number
+  chapterResults: ChapterResult[]
+  eventType: EventType
 }
 
 export interface QuizViewProps {

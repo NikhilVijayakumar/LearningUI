@@ -6,7 +6,7 @@ import Paper from '@mui/material/Paper'
 import CircularProgress from '@mui/material/CircularProgress'
 import Alert from '@mui/material/Alert'
 import { useState, useEffect } from 'react'
-import { StateType } from '../../../../common/repo/AppState'
+import { StateType } from '../../../../common/utils/AppState'
 import { useNavigate } from 'react-router-dom'
 import { UrlList } from '../../../../common/routes/UrlList'
 
@@ -50,7 +50,7 @@ export default function TopicList({ appstate, literal }: TopicListProps) {
         setRenderedContent(
           <Paper>
             <GenericList
-              subheaderText={'Topic List'}
+              subheaderText={literal['topic_list']}
               data={topicList}
               onItemClick={handleItemClick}
             />

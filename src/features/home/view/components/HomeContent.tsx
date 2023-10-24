@@ -3,7 +3,7 @@
 import React from 'react'
 import Box from '@mui/material/Box'
 import { drawerWidth } from '../../../../common/components/navigation/drawerData'
-import { StateType } from '../../../../common/repo/AppState'
+import { StateType } from '../../../../common/utils/AppState'
 import { HomeContentProps } from '../../repo/data/homeData'
 import CircularProgress from '@mui/material/CircularProgress'
 import Alert from '@mui/material/Alert'

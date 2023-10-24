@@ -8,9 +8,9 @@ import {
 } from '../repo/data/topicData'
 import { useState, useEffect } from 'react'
 import { HttpStatusCode } from '../../../common/repo/HttpStatusCode'
-import { StateType } from '../../../common/repo/AppState'
+import { StateType } from '../../../common/utils/AppState'
 import useStatusMessage from '../../../common/repo/useStatusMessage'
-import { EventType } from '../../../common/components/list/EventType'
+import { EventType } from '../../../common/utils/EventType'
 
 const useTopic = (literal: Record<string, string>) => {
   const [appstate, setAppState] = useState<TopicListState<TopicList>>({

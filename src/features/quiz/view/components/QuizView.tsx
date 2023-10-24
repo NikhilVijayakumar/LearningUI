@@ -1,18 +1,19 @@
 //path src\features\quiz\view\components\QuizView.tsx
 
 import { useState, useEffect } from 'react'
-import { Box, Paper,Typography } from '@mui/material'
+import { Box, Paper, Typography } from '@mui/material'
 import { useParams } from 'react-router-dom'
-import { QuizViewProps, QuizTopic} from '../../repo/data/quizData'
-import { StateType } from '../../../../common/repo/AppState'
+import { QuizViewProps, QuizTopic } from '../../repo/data/quizData'
+import { StateType } from '../../../../common/utils/AppState'
 import Alert from '@mui/material/Alert'
 import CircularProgress from '@mui/material/CircularProgress'
 import Radio from '@mui/material/Radio'
 import RadioGroup from '@mui/material/RadioGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
-import { EventType } from '../../../../common/components/list/EventType'
+import { EventType } from '../../../../common/utils/EventType'
 import quizIcon from '../../../../assets/quiz_icon.png'
 import resultIcon from '../../../../assets/result_icon.png'
+import { shuffleArray } from '../../../../common/utils/arrayUtils';
 
 export default function QuizView({
   appstate,
@@ -22,10 +23,9 @@ export default function QuizView({
   handleRestart,
   handleSubmit,
 }: QuizViewProps) {
-
   const [renderedContent, setRenderedContent] = useState<JSX.Element | null>(
     null,
-  )  
+  )
 
   const updateQuiz = () => {
     setRenderedContent(
@@ -39,45 +39,46 @@ export default function QuizView({
         }}
       >
         {appstate.validationError ? (
-        <Box>
-          <Alert severity="error">{literal['option_error']}</Alert>
-        </Box>):null}       
+          <Box>
+            <Alert severity="error">{literal['option_error']}</Alert>
+          </Box>
+        ) : null}
         {appstate.eventType == EventType.COMPLETED ? (
           <div>
-           
-             <Typography variant="h4" align="center" sx={{ color: '#333333' }}>        
-        <img        
-          src={resultIcon} // Reference your image here
-          alt="Exam Icon"
-          width="96"
-          height="96"
-        />
-          {literal['result']}
-       
-      </Typography>
-      <Typography variant="h5" align="center" sx={{ color: '#333333' }}>   
-      {literal['score']} {calculatePercentage()} %
-      </Typography>            
+            <Typography variant="h4" align="center" sx={{ color: '#333333' }}>
+              <img
+                src={resultIcon} 
+                alt="Exam Icon"
+                width="96"
+                height="96"
+              />
+              {literal['result']}
+            </Typography>
+            <Typography variant="h5" align="center" sx={{ color: '#333333' }}>
+              {literal['score']} {calculatePercentage()} %
+            </Typography>
             <button onClick={handleRestart}>{literal['restart_exam']}</button>
           </div>
         ) : (
           <div>
- <Typography variant="h4" align="center" sx={{ color: '#333333' }}>        
-        <img        
-          src={quizIcon} // Reference your image here
-          alt="Exam Icon"
-          width="96" // Set the width of the image as needed
-          height="96" // Set the height of the image as needed
-        />
-        {literal['quiz']}
-      </Typography>
-            <p>{appstate.quiz[appstate.currentQuestionIndex].question.question}</p>
+            <Typography variant="h4" align="center" sx={{ color: '#333333' }}>
+              <img
+                src={quizIcon} 
+                alt="Quiz Icon"
+                width="96" 
+                height="96" 
+              />
+              {literal['quiz']}
+            </Typography>
+            <p>
+              {appstate.quiz[appstate.currentQuestionIndex].question.question}
+            </p>
             <RadioGroup
               aria-labelledby="radio-group-question"
               name="quiz"
               onChange={handleRadioChange}
             >
-              {appstate.quiz[appstate.currentQuestionIndex].question.options.map((option, i) => (
+              {getOptions().map((option, i) => (
                 <FormControlLabel
                   key={i}
                   value={option}
@@ -91,6 +92,12 @@ export default function QuizView({
         )}
       </Box>,
     )
+  }
+
+  const getOptions = () => {
+    return shuffleArray(appstate.quiz[
+      appstate.currentQuestionIndex
+    ].question.options)
   }
 
   const calculatePercentage = () => {
@@ -110,14 +117,15 @@ export default function QuizView({
       name,
       type,
     }
-    useEffect(() => {      
+    useEffect(() => {
       if (appstate.state == StateType.INIT) {
         fetchQuiz(topic)
       } else if (appstate.state == StateType.LOADING) {
         setRenderedContent(<CircularProgress />)
       } else if (
         appstate.state == StateType.COMPLETED &&
-        appstate.isSuccess && appstate.quiz.length == 0       
+        appstate.isSuccess &&
+        appstate.quiz.length == 0
       ) {
         setRenderedContent(
           <Paper>
@@ -132,8 +140,9 @@ export default function QuizView({
           </Paper>,
         )
       } else if (
-        appstate.eventType == EventType.NEXT || appstate.eventType == EventType.COMPLETED
-      ) {      
+        appstate.eventType == EventType.NEXT ||
+        appstate.eventType == EventType.COMPLETED
+      ) {
         updateQuiz()
       } else {
         setRenderedContent(
@@ -151,7 +160,7 @@ export default function QuizView({
       appstate.currentQuestionIndex,
       appstate.validationError,
       appstate.correctAnswers,
-      appstate.quiz,      
+      appstate.quiz,
     ])
   }
   return <>{renderedContent}</>
