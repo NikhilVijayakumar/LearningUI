@@ -9,6 +9,22 @@ export interface QueryInfo {
 
 export type Quiz = QueryInfo[]
 
+export type QuizInfo = {
+  validationError: boolean;
+  quiz: Quiz;
+  currentQuestionIndex: number;
+  selectedAnswer: string;
+  correctAnswers: number;
+  quizCompleted: boolean;
+  chapterResults: ChapterResult[];
+};
+
+type ChapterResult = {
+  chapterName: string;
+  totalQuestions: number;
+  correctAnswers: number;
+};
+
 export interface Query {
   correct_answer: string
   options: string[]

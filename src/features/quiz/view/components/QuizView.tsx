@@ -1,9 +1,9 @@
 //path src\features\quiz\view\components\QuizView.tsx
 
-import { useState, useEffect, ChangeEvent } from 'react'
+import { useState, useEffect } from 'react'
 import { Box, Paper } from '@mui/material'
 import { useParams } from 'react-router-dom'
-import { QuizViewProps, QuizTopic, Quiz } from '../../repo/data/quizData'
+import { QuizViewProps, QuizTopic, Quiz,QuizInfo } from '../../repo/data/quizData'
 import { StateType } from '../../../../common/repo/AppState'
 import Alert from '@mui/material/Alert'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -16,46 +16,51 @@ export default function QuizView({
   literal,
   fetchQuiz,
 }: QuizViewProps) {
-  //const [quiz, setQuiz] = useState<Quiz>([])
-  // const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  //const [selectedAnswer, setSelectedAnswer] = useState('')
-  //const [correctAnswers, setCorrectAnswers] = useState(0)
-  //const [quizCompleted, setQuizCompleted] = useState(false)
 
   const [renderedContent, setRenderedContent] = useState<JSX.Element | null>(
     null,
   )
 
-  let quiz: Quiz = []
-  let currentQuestionIndex = 0
-  let selectedAnswer = ''
-  let correctAnswers = 0
-  let quizCompleted = false
+  const info: QuizInfo = {
+    quiz: [], 
+    currentQuestionIndex: 0, 
+    selectedAnswer: '', 
+    correctAnswers: 0, 
+    quizCompleted: false, 
+    chapterResults: [], 
+    validationError:false
+  };
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    selectedAnswer = (event.target as HTMLInputElement).value
+    info.selectedAnswer = (event.target as HTMLInputElement).value
   }
 
   const handleSubmit = () => {
-    if (selectedAnswer === quiz[currentQuestionIndex].question.correct_answer) {
-      correctAnswers = correctAnswers + 1
+    if (info.selectedAnswer === '') {
+      info.validationError = true
+      updateQuiz()
+      return
+    }
+    info.validationError = false
+    if (info.selectedAnswer === info.quiz[info.currentQuestionIndex].question.correct_answer) {
+      info.correctAnswers = info.correctAnswers + 1
     }
 
-    if (currentQuestionIndex < quiz.length - 1) {
-      currentQuestionIndex = currentQuestionIndex + 1
-      selectedAnswer = ''
+    if (info.currentQuestionIndex < info.quiz.length - 1) {
+      info.currentQuestionIndex = info.currentQuestionIndex + 1
+      info.selectedAnswer = ''
       updateQuiz()
     } else {
-      quizCompleted = true
+      info.quizCompleted = true
       updateQuiz()
     }
   }
 
   const handleRestart = () => {
-    currentQuestionIndex = 0
-    selectedAnswer = ''
-    correctAnswers = 0
-    quizCompleted = false
+    info.currentQuestionIndex = 0
+    info.selectedAnswer = ''
+    info.correctAnswers = 0
+    info.quizCompleted = false
     updateQuiz()
   }
 
@@ -70,7 +75,12 @@ export default function QuizView({
           boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
         }}
       >
-        {quizCompleted ? (
+        {info.validationError ? (
+        <Box>
+          <Alert severity="error">Please select an option</Alert>
+        </Box>):null}
+
+        {info.quizCompleted ? (
           <div>
             <p>Quiz Completed</p>
             <p>Your score: {calculatePercentage()}%</p>
@@ -78,13 +88,13 @@ export default function QuizView({
           </div>
         ) : (
           <div>
-            <p>{quiz[currentQuestionIndex].question.question}</p>
+            <p>{info.quiz[info.currentQuestionIndex].question.question}</p>
             <RadioGroup
-              aria-labelledby="demo-error-radios"
+              aria-labelledby="radio-group-question"
               name="quiz"
               onChange={handleRadioChange}
             >
-              {quiz[currentQuestionIndex].question.options.map((option, i) => (
+              {info.quiz[info.currentQuestionIndex].question.options.map((option, i) => (
                 <FormControlLabel
                   key={i}
                   value={option}
@@ -101,7 +111,7 @@ export default function QuizView({
   }
 
   const calculatePercentage = () => {
-    return ((correctAnswers / quiz.length) * 100).toFixed(2)
+    return ((info.correctAnswers / info.quiz.length) * 100).toFixed(2)
   }
 
   const { name, type } = useParams()
@@ -145,7 +155,7 @@ export default function QuizView({
         appstate.state == StateType.COMPLETED &&
         quizData != null
       ) {
-        quiz = quizData
+        info.quiz = quizData
         updateQuiz()
       } else {
         setRenderedContent(
