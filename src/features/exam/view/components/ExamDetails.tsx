@@ -42,12 +42,7 @@ export default function ExamDetails({ literal }: ExamDetailsProps) {
       }}
     >
       <Typography variant="h4" align="center" sx={{ color: '#333333' }}>
-        <img
-          src={examIcon} 
-          alt="Exam Icon"
-          width="96"
-          height="96" 
-        />
+        <img src={examIcon} alt="Exam Icon" width="96" height="96" />
         {literal['app_name']}
       </Typography>
       <form onSubmit={handleSubmit}>

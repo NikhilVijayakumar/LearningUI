@@ -22,10 +22,6 @@ type ChapterResult = {
   correctAnswers: number
 }
 
-
-
-
-
 export interface QuizTopic {
   name: string
   type: string

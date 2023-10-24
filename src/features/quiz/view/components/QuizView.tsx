@@ -13,7 +13,7 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import { EventType } from '../../../../common/utils/EventType'
 import quizIcon from '../../../../assets/quiz_icon.png'
 import resultIcon from '../../../../assets/result_icon.png'
-import { shuffleArray } from '../../../../common/utils/arrayUtils';
+import { shuffleArray } from '../../../../common/utils/arrayUtils'
 
 export default function QuizView({
   appstate,
@@ -46,34 +46,26 @@ export default function QuizView({
         {appstate.eventType == EventType.COMPLETED ? (
           <div>
             <Typography variant="h3" align="center" sx={{ color: '#333333' }}>
-              <img
-                src={resultIcon} 
-                alt="Exam Icon"
-                width="96"
-                height="96"
-              />
+              <img src={resultIcon} alt="Exam Icon" width="96" height="96" />
               {literal['result']}
             </Typography>
             <Typography variant="h4" align="center" sx={{ color: '#333333' }}>
-              {literal['score']} {appstate.correctAnswers} / {appstate.quiz.length} = {calculatePercentage()} %
+              {literal['score']} {appstate.correctAnswers} /{' '}
+              {appstate.quiz.length} = {calculatePercentage()} %
             </Typography>
             <button onClick={handleRestart}>{literal['restart_exam']}</button>
           </div>
         ) : (
           <div>
             <Typography variant="h2" align="center" sx={{ color: '#333333' }}>
-              <img
-                src={quizIcon} 
-                alt="Quiz Icon"
-                width="96" 
-                height="96" 
-              />
+              <img src={quizIcon} alt="Quiz Icon" width="96" height="96" />
               {literal['quiz']}
             </Typography>
             <Typography variant="h4" align="center" sx={{ color: '#333333' }}>
-            {appstate.currentQuestionIndex+1} . {appstate.quiz[appstate.currentQuestionIndex].question.question}
+              {appstate.currentQuestionIndex + 1} .{' '}
+              {appstate.quiz[appstate.currentQuestionIndex].question.question}
             </Typography>
-           
+
             <RadioGroup
               aria-labelledby="radio-group-question"
               name="quiz"
@@ -96,9 +88,9 @@ export default function QuizView({
   }
 
   const getOptions = () => {
-    return shuffleArray(appstate.quiz[
-      appstate.currentQuestionIndex
-    ].question.options)
+    return shuffleArray(
+      appstate.quiz[appstate.currentQuestionIndex].question.options,
+    )
   }
 
   const calculatePercentage = () => {

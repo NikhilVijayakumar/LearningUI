@@ -13,7 +13,7 @@ import { HttpStatusCode } from '../../../common/repo/HttpStatusCode'
 import { StateType } from '../../../common/utils/AppState'
 import useStatusMessage from '../../../common/repo/useStatusMessage'
 import { EventType } from '../../../common/utils/EventType'
-import { shuffleArray } from '../../../common/utils/arrayUtils';
+import { shuffleArray } from '../../../common/utils/arrayUtils'
 
 const useQuiz = (literal: Record<string, string>) => {
   const [appstate, setAppState] = useState<QuizState<Quiz>>({
@@ -37,11 +37,13 @@ const useQuiz = (literal: Record<string, string>) => {
   }
 
   const handleSubmit = () => {
-    let answer = appstate.correctAnswers 
+    let answer = appstate.correctAnswers
     let chapterName = appstate.quiz[appstate.currentQuestionIndex].chaptername
-    let chapterResult = appstate.chapterResults.find((result) => result.chapterName === chapterName) 
+    let chapterResult = appstate.chapterResults.find(
+      (result) => result.chapterName === chapterName,
+    )
     if (!chapterResult) {
-      console.log('Chapter result not found') 
+      console.log('Chapter result not found')
       return
     }
     if (appstate.selectedAnswer === '') {
@@ -55,7 +57,7 @@ const useQuiz = (literal: Record<string, string>) => {
     if (
       appstate.selectedAnswer ===
       appstate.quiz[appstate.currentQuestionIndex].question.correct_answer
-    ) {      
+    ) {
       answer++
       chapterResult.correctAnswers++
     }
@@ -65,16 +67,16 @@ const useQuiz = (literal: Record<string, string>) => {
       appstate.selectedAnswer = ''
       setAppState((prevState) => ({
         ...prevState,
-        correctAnswers :answer,
+        correctAnswers: answer,
         selectedAnswer: '',
         validationError: false,
         eventType: EventType.NEXT,
       }))
     } else {
-      console.log("Completed",appstate.chapterResults)
+      console.log('Completed', appstate.chapterResults)
       setAppState((prevState) => ({
         ...prevState,
-        correctAnswers :answer,
+        correctAnswers: answer,
         validationError: false,
         eventType: EventType.COMPLETED,
       }))
@@ -105,14 +107,18 @@ const useQuiz = (literal: Record<string, string>) => {
       const request: QuizRequest = { topic: quizdata.name, type: quizdata.type }
       const response = await api(literal, request)
       if (response.isSuccess && response.data) {
-        const quizResponse: QuizResponse = response.data     
-        const uniqueChapterNames = [...new Set(quizResponse.data.map(item => item.chaptername))]; 
+        const quizResponse: QuizResponse = response.data
+        const uniqueChapterNames = [
+          ...new Set(quizResponse.data.map((item) => item.chaptername)),
+        ]
 
-        const chapterResults = uniqueChapterNames.map(chapterName => ({
+        const chapterResults = uniqueChapterNames.map((chapterName) => ({
           chapterName,
-          totalQuestions: quizResponse.data.filter(quiz => quiz.chaptername === chapterName).length,
+          totalQuestions: quizResponse.data.filter(
+            (quiz) => quiz.chaptername === chapterName,
+          ).length,
           correctAnswers: 0,
-        }));
+        }))
 
         setAppState((prevState) => ({
           ...prevState,
