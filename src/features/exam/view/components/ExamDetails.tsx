@@ -14,6 +14,7 @@ import { useParams } from 'react-router-dom'
 import { ExamDetailsProps } from '../../repo/data/examData'
 import { useNavigate } from 'react-router-dom'
 import { UrlList } from '../../../../common/routes/UrlList'
+import examIcon from '../../../../assets/exam_icon.png'
 
 export default function ExamDetails({ literal }: ExamDetailsProps) {
   const { name, types } = useParams()
@@ -40,7 +41,14 @@ export default function ExamDetails({ literal }: ExamDetailsProps) {
         boxShadow: '0 0 10px rgba(0,0,0,0.1)',
       }}
     >
-      <Typography variant="h4" align="center" sx={{ color: '#333333' }}>
+        
+      <Typography variant="h4" align="center" sx={{ color: '#333333' }}>        
+        <img        
+          src={examIcon} // Reference your image here
+          alt="Exam Icon"
+          width="96" // Set the width of the image as needed
+          height="96" // Set the height of the image as needed
+        />
         {literal['app_name']}
       </Typography>
       <form onSubmit={handleSubmit}>

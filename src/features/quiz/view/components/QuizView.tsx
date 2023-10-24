@@ -1,7 +1,7 @@
 //path src\features\quiz\view\components\QuizView.tsx
 
 import { useState, useEffect } from 'react'
-import { Box, Paper } from '@mui/material'
+import { Box, Paper,Typography } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import { QuizViewProps, QuizTopic} from '../../repo/data/quizData'
 import { StateType } from '../../../../common/repo/AppState'
@@ -11,6 +11,8 @@ import Radio from '@mui/material/Radio'
 import RadioGroup from '@mui/material/RadioGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import { EventType } from '../../../../common/components/list/EventType'
+import quizIcon from '../../../../assets/quiz_icon.png'
+import resultIcon from '../../../../assets/result_icon.png'
 
 export default function QuizView({
   appstate,
@@ -39,16 +41,36 @@ export default function QuizView({
         {appstate.validationError ? (
         <Box>
           <Alert severity="error">{literal['option_error']}</Alert>
-        </Box>):null}
-
+        </Box>):null}       
         {appstate.eventType == EventType.COMPLETED ? (
           <div>
-            <p>Quiz Completed</p>
-            <p>Your score: {calculatePercentage()}%</p>
+           
+             <Typography variant="h4" align="center" sx={{ color: '#333333' }}>        
+        <img        
+          src={resultIcon} // Reference your image here
+          alt="Exam Icon"
+          width="96"
+          height="96"
+        />
+          {literal['result']}
+       
+      </Typography>
+      <Typography variant="h5" align="center" sx={{ color: '#333333' }}>   
+      {literal['score']} {calculatePercentage()} %
+      </Typography>            
             <button onClick={handleRestart}>{literal['restart_exam']}</button>
           </div>
         ) : (
           <div>
+ <Typography variant="h4" align="center" sx={{ color: '#333333' }}>        
+        <img        
+          src={quizIcon} // Reference your image here
+          alt="Exam Icon"
+          width="96" // Set the width of the image as needed
+          height="96" // Set the height of the image as needed
+        />
+        {literal['quiz']}
+      </Typography>
             <p>{appstate.quiz[appstate.currentQuestionIndex].question.question}</p>
             <RadioGroup
               aria-labelledby="radio-group-question"
