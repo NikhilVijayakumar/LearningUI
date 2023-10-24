@@ -55,7 +55,7 @@ export default function QuizView({
               {literal['result']}
             </Typography>
             <Typography variant="h4" align="center" sx={{ color: '#333333' }}>
-              {literal['score']} {calculatePercentage()} %
+              {literal['score']} {appstate.correctAnswers} / {appstate.quiz.length} = {calculatePercentage()} %
             </Typography>
             <button onClick={handleRestart}>{literal['restart_exam']}</button>
           </div>

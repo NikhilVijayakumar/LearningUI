@@ -38,6 +38,12 @@ const useQuiz = (literal: Record<string, string>) => {
 
   const handleSubmit = () => {
     let answer = appstate.correctAnswers 
+    let chapterName = appstate.quiz[appstate.currentQuestionIndex].chaptername
+    let chapterResult = appstate.chapterResults.find((result) => result.chapterName === chapterName) 
+    if (!chapterResult) {
+      console.log('Chapter result not found') 
+      return
+    }
     if (appstate.selectedAnswer === '') {
       setAppState((prevState) => ({
         ...prevState,
@@ -51,6 +57,7 @@ const useQuiz = (literal: Record<string, string>) => {
       appstate.quiz[appstate.currentQuestionIndex].question.correct_answer
     ) {      
       answer++
+      chapterResult.correctAnswers++
     }
 
     if (appstate.currentQuestionIndex < appstate.quiz.length - 1) {
@@ -64,6 +71,7 @@ const useQuiz = (literal: Record<string, string>) => {
         eventType: EventType.NEXT,
       }))
     } else {
+      console.log("Completed",appstate.chapterResults)
       setAppState((prevState) => ({
         ...prevState,
         correctAnswers :answer,
@@ -97,7 +105,15 @@ const useQuiz = (literal: Record<string, string>) => {
       const request: QuizRequest = { topic: quizdata.name, type: quizdata.type }
       const response = await api(literal, request)
       if (response.isSuccess && response.data) {
-        const quizResponse: QuizResponse = response.data      
+        const quizResponse: QuizResponse = response.data     
+        const uniqueChapterNames = [...new Set(quizResponse.data.map(item => item.chaptername))]; 
+
+        const chapterResults = uniqueChapterNames.map(chapterName => ({
+          chapterName,
+          totalQuestions: quizResponse.data.filter(quiz => quiz.chaptername === chapterName).length,
+          correctAnswers: 0,
+        }));
+
         setAppState((prevState) => ({
           ...prevState,
           state: StateType.COMPLETED,
@@ -107,6 +123,7 @@ const useQuiz = (literal: Record<string, string>) => {
           data: quizResponse.data,
           quiz: shuffleArray(quizResponse.data),
           eventType: EventType.NEXT,
+          chapterResults: chapterResults,
         }))
       } else {
         setAppState((prevState) => ({
