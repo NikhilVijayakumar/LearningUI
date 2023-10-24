@@ -19,5 +19,11 @@
   "app_name": "Skill Sage",
   "start_exam": "Start Exam",
   "save": "Save",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "option_error": "Please select an option.",
+  "next_question": "Next Question",
+  "restart_exam": "Restart Exam",
+  "internal_error" : "Internal server error. Please try again later.",
+  "no_questions": "No questions found.",
+  "select_exam_type": "Select an exam type to start"
 }

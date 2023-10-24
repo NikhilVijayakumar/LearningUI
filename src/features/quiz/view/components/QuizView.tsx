@@ -38,14 +38,14 @@ export default function QuizView({
       >
         {appstate.validationError ? (
         <Box>
-          <Alert severity="error">Please select an option</Alert>
+          <Alert severity="error">{literal['option_error']}</Alert>
         </Box>):null}
 
         {appstate.eventType == EventType.COMPLETED ? (
           <div>
             <p>Quiz Completed</p>
             <p>Your score: {calculatePercentage()}%</p>
-            <button onClick={handleRestart}>Restart Quiz</button>
+            <button onClick={handleRestart}>{literal['restart_exam']}</button>
           </div>
         ) : (
           <div>
@@ -64,7 +64,7 @@ export default function QuizView({
                 />
               ))}
             </RadioGroup>
-            <button onClick={handleSubmit}>Next Question</button>
+            <button onClick={handleSubmit}>{literal['next_question']}</button>
           </div>
         )}
       </Box>,
@@ -80,7 +80,7 @@ export default function QuizView({
   if (name == null || type == null) {
     setRenderedContent(
       <Paper>
-        <Alert severity="error">Something went wrong</Alert>
+        <Alert severity="error">{literal['internal_error']}</Alert>
       </Paper>,
     )
   } else {
@@ -99,7 +99,7 @@ export default function QuizView({
       ) {
         setRenderedContent(
           <Paper>
-            <Alert severity="warning">No List found</Alert>
+            <Alert severity="warning">{literal['no_questions']}</Alert>
           </Paper>,
         )
       }
@@ -110,13 +110,13 @@ export default function QuizView({
           </Paper>,
         )
       } else if (
-        appstate.eventType == EventType.NEXT
+        appstate.eventType == EventType.NEXT || appstate.eventType == EventType.COMPLETED
       ) {      
         updateQuiz()
       } else {
         setRenderedContent(
           <Paper>
-            <Alert severity="error">Something went wrong</Alert>
+            <Alert severity="error">{literal['internal_error']}</Alert>
           </Paper>,
         )
       }

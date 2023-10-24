@@ -55,7 +55,7 @@ export default function ExamDetails({ literal }: ExamDetailsProps) {
             <FormLabel component="legend">{name}</FormLabel>
           </FormControl>
           <FormControl sx={{ margin: '10px' }} component="fieldset">
-            <FormLabel component="legend">Select an exam type:</FormLabel>
+            <FormLabel component="legend"> {literal['select_exam_type']}</FormLabel>
             <RadioGroup
               row
               aria-label="type"
