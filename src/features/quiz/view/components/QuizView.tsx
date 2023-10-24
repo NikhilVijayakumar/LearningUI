@@ -15,6 +15,12 @@ import quizIcon from '../../../../assets/quiz_icon.png'
 import resultIcon from '../../../../assets/result_icon.png'
 import { shuffleArray } from '../../../../common/utils/arrayUtils'
 import { MarksList } from '../../../../common/components/list/MarkList'
+import { MarkPieChart } from '../../../../common/components/charts/MarkPieChart'
+import { MarkLineChart } from '../../../../common/components/charts/MarkLineChart'
+import LegendToggleIcon from '@mui/icons-material/LegendToggle'
+import AssignmentIcon from '@mui/icons-material/Assignment'
+import RestartAltIcon from '@mui/icons-material/RestartAlt'
+import IconButton from '@mui/material/IconButton'
 
 export default function QuizView({
   appstate,
@@ -27,6 +33,62 @@ export default function QuizView({
   const [renderedContent, setRenderedContent] = useState<JSX.Element | null>(
     null,
   )
+  let viewMode = false
+
+  const examResult = () => {
+    return (
+      <>
+        <IconButton onClick={toggleViewMode} color="secondary">
+          {viewMode ? <AssignmentIcon /> : <LegendToggleIcon />}
+        </IconButton>
+        <IconButton onClick={handleRestart} color="secondary">
+          {<RestartAltIcon />}
+        </IconButton>
+        {viewMode ? examGraphicsResult() : examTextResult()}
+      </>
+    )
+  }
+
+  const examGraphicsResult = () => {
+    const wrongAnswer = appstate.quiz.length - appstate.correctAnswers
+    return (
+      <div>
+        <Typography variant="h3" align="center" sx={{ color: '#333333' }}>
+          <img src={resultIcon} alt="Exam Icon" width="96" height="96" />
+          {literal['result']}
+        </Typography>
+        <MarkPieChart
+          wrightAnswer={appstate.correctAnswers}
+          wrongAnswer={wrongAnswer}
+          wrightAnswerLabel="Wright Answer"
+          wrongAnswerLabel="Wrong Answer"
+        />
+
+        <Typography variant="h3" align="center" sx={{ color: '#333333' }}>
+          Chapterwise Marks
+        </Typography>
+        <MarkLineChart results={appstate.chapterResults} passThreshold={70} />
+      </div>
+    )
+  }
+
+  const examTextResult = () => {
+    return (
+      <Box>
+        <div>
+          <Typography variant="h3" align="center" sx={{ color: '#333333' }}>
+            <img src={resultIcon} alt="Exam Icon" width="96" height="96" />
+            {literal['result']}
+          </Typography>
+          <Typography variant="h4" align="center" sx={{ color: '#333333' }}>
+            {literal['score']} {appstate.correctAnswers} /{' '}
+            {appstate.quiz.length} = {calculatePercentage()} %
+          </Typography>
+        </div>
+        <MarksList data={appstate.chapterResults} />
+      </Box>
+    )
+  }
 
   const updateQuiz = () => {
     setRenderedContent(
@@ -45,20 +107,7 @@ export default function QuizView({
           </Box>
         ) : null}
         {appstate.eventType == EventType.COMPLETED ? (
-          <Box>
-            <div>
-              <Typography variant="h3" align="center" sx={{ color: '#333333' }}>
-                <img src={resultIcon} alt="Exam Icon" width="96" height="96" />
-                {literal['result']}
-              </Typography>
-              <Typography variant="h4" align="center" sx={{ color: '#333333' }}>
-                {literal['score']} {appstate.correctAnswers} /{' '}
-                {appstate.quiz.length} = {calculatePercentage()} %
-              </Typography>
-              <button onClick={handleRestart}>{literal['restart_exam']}</button>
-            </div>
-            <MarksList data={appstate.chapterResults} />
-          </Box>
+          examResult()
         ) : (
           <div>
             <Typography variant="h2" align="center" sx={{ color: '#333333' }}>
@@ -89,6 +138,12 @@ export default function QuizView({
         )}
       </Box>,
     )
+  }
+
+  const toggleViewMode = () => {
+    viewMode = !viewMode
+    console.log('toggleViewMode', viewMode)
+    updateQuiz()
   }
 
   const getOptions = () => {

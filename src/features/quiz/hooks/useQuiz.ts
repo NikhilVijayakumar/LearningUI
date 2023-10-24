@@ -73,7 +73,6 @@ const useQuiz = (literal: Record<string, string>) => {
         eventType: EventType.NEXT,
       }))
     } else {
-      console.log('Completed', appstate.chapterResults)
       setAppState((prevState) => ({
         ...prevState,
         correctAnswers: answer,
