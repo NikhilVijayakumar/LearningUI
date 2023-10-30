@@ -13,4 +13,5 @@ export interface AppState<T> {
   status: HttpStatusCode
   statusMessage: String
   data: T | null
+
 }
