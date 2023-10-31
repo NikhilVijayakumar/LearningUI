@@ -13,7 +13,7 @@ const useRoutes = (path: string) => {
     case UrlList.LOGIN:
       return Login as () => JSX.Element
     case UrlList.REGISTRATION:
-      return Registration  as () => JSX.Element
+      return Registration as () => JSX.Element
     case UrlList.HOME:
       return Home as () => JSX.Element
     case UrlList.TOPIC:

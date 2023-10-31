@@ -1,11 +1,11 @@
 // src/common/components/form/ConfirmPasswordInput.tsx
 
-import React from 'react';
-import TextField from '@mui/material/TextField';
+import React from 'react'
+import TextField from '@mui/material/TextField'
 
 interface ConfirmPasswordInputProps {
-  literal: Record<string, string>;
-  onConfirmPasswordUpdate: (confirmPassword: string) => void;
+  literal: Record<string, string>
+  onConfirmPasswordUpdate: (confirmPassword: string) => void
 }
 
 const ConfirmPasswordInput: React.FC<ConfirmPasswordInputProps> = ({
@@ -13,10 +13,10 @@ const ConfirmPasswordInput: React.FC<ConfirmPasswordInputProps> = ({
   onConfirmPasswordUpdate,
 }) => {
   const handleConfirmPasswordChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    onConfirmPasswordUpdate(event.target.value);
-  };
+    onConfirmPasswordUpdate(event.target.value)
+  }
 
   return (
     <TextField
@@ -28,7 +28,7 @@ const ConfirmPasswordInput: React.FC<ConfirmPasswordInputProps> = ({
       type="password"
       onChange={handleConfirmPasswordChange}
     />
-  );
-};
+  )
+}
 
-export default ConfirmPasswordInput;
+export default ConfirmPasswordInput

@@ -1,76 +1,78 @@
 // src/features/registration/view/components/RegistrationForm.tsx
 
-import React from 'react';
-import LoadingButton from '@mui/lab/LoadingButton';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import LockOutlinedIcon from '@mui/icons-material/LockPersonOutlined';
-import { useNavigate } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material/styles';
-import { CssBaseline } from '@mui/material';
-import { lightTheme, darkTheme } from '../../../../themes/appTheme';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import { ThemeContext } from '../../../../common/theme/themeContext';
-import { StateType } from '../../../../common/utils/AppState';
-import FormHeader from '../../../../common/components/form/FormHeader';
-import EmailInput from '../../../../common/components/form/EmailInput';
-import PasswordInput from '../../../../common/components/form/PasswordInput';
-import ThemeToggle from '../../../../common/components/theme/ThemeToggle';
-import Alert from '@mui/material/Alert';
+import React from 'react'
+import LoadingButton from '@mui/lab/LoadingButton'
+import PersonAddIcon from '@mui/icons-material/PersonAdd'
+import LockOutlinedIcon from '@mui/icons-material/LockPersonOutlined'
+import { useNavigate } from 'react-router-dom'
+import { ThemeProvider } from '@mui/material/styles'
+import { CssBaseline } from '@mui/material'
+import { lightTheme, darkTheme } from '../../../../themes/appTheme'
+import Container from '@mui/material/Container'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import { ThemeContext } from '../../../../common/theme/themeContext'
+import { StateType } from '../../../../common/utils/AppState'
+import FormHeader from '../../../../common/components/form/FormHeader'
+import EmailInput from '../../../../common/components/form/EmailInput'
+import PasswordInput from '../../../../common/components/form/PasswordInput'
+import ThemeToggle from '../../../../common/components/theme/ThemeToggle'
+import Alert from '@mui/material/Alert'
 import {
   RegistrationProps,
   RegistrationEmailState,
   RegistrationPasswordState,
-  RegistrationConfirmPasswordState
-} from '../../repo/data/registrationData';
-import { useEffect } from 'react';
-import FormContainer from '../../../../common/components/form/FormContainer';
-import { defaultFormStyle } from '../../../../common/components/form/style/FormStyle';
-import { UrlList } from '../../../../common/routes/UrlList';
-import UserNameInput from '../../../../common/components/form/UserNameInput';
-import ConfirmPasswordInput from '../../../../common/components/form/ConfirmPasswordInput';
-import FormFooter from '../../../../common/components/form/FormFooter';
+  RegistrationConfirmPasswordState,
+} from '../../repo/data/registrationData'
+import { useEffect } from 'react'
+import FormContainer from '../../../../common/components/form/FormContainer'
+import { defaultFormStyle } from '../../../../common/components/form/style/FormStyle'
+import { UrlList } from '../../../../common/routes/UrlList'
+import UserNameInput from '../../../../common/components/form/UserNameInput'
+import ConfirmPasswordInput from '../../../../common/components/form/ConfirmPasswordInput'
+import FormFooter from '../../../../common/components/form/FormFooter'
 
 const RegistrationForm = (props: RegistrationProps) => {
-  const navigate = useNavigate();
-  const { literal, appstate, handleRegistration, setState } = props;
-  const themeContext = React.useContext(ThemeContext);
+  const navigate = useNavigate()
+  const { literal, appstate, handleRegistration, setState } = props
+  const themeContext = React.useContext(ThemeContext)
 
   const onEmailUpdate = (emailState: RegistrationEmailState) => {
-    setState(emailState, null, null, null); 
-  };
+    setState(emailState, null, null, null)
+  }
 
   const onPasswordUpdate = (passwordState: RegistrationPasswordState) => {
-    setState(null, passwordState, null, null); 
-  };
+    setState(null, passwordState, null, null)
+  }
 
   const onUserNameUpdate = (userName: string) => {
-    setState(null, null, userName, null); 
-  };
+    setState(null, null, userName, null)
+  }
 
-  const onConfirmPasswordUpdate = (confirmPasswordState: RegistrationConfirmPasswordState) => {
-    setState(null, null, null, confirmPasswordState); 
-  };
+  const onConfirmPasswordUpdate = (
+    confirmPasswordState: RegistrationConfirmPasswordState,
+  ) => {
+    setState(null, null, null, confirmPasswordState)
+  }
 
   useEffect(() => {
     if (appstate.isSuccess && appstate.data) {
-      console.log('Registration success', appstate.data);
-      navigate(UrlList.LOGIN);
+      console.log('Registration success', appstate.data)
+      navigate(UrlList.LOGIN)
     } else if (appstate.isError) {
-      showError();
+      showError()
     }
-  }, [appstate]);
+  }, [appstate])
 
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    await handleRegistration();
-  
+    event.preventDefault()
+    await handleRegistration()
+
     if (appstate.isSuccess && appstate.data) {
-      console.log('Registration success', appstate.data);
-      navigate(UrlList.LOGIN);
+      console.log('Registration success', appstate.data)
+      navigate(UrlList.LOGIN)
     }
-  };
+  }
 
   const showError = () => {
     if (appstate.isError) {
@@ -78,9 +80,9 @@ const RegistrationForm = (props: RegistrationProps) => {
         <Box>
           <Alert severity="error">{appstate.statusMessage}</Alert>
         </Box>
-      );
+      )
     }
-  };
+  }
 
   return (
     <ThemeProvider theme={themeContext.darkMode ? darkTheme : lightTheme}>
@@ -95,14 +97,12 @@ const RegistrationForm = (props: RegistrationProps) => {
               literal={literal}
               onUserNameUpdate={onUserNameUpdate}
             />
-            <EmailInput literal={literal} 
-             onEmailUpdate={onEmailUpdate} 
-            />
+            <EmailInput literal={literal} onEmailUpdate={onEmailUpdate} />
             <PasswordInput
               literal={literal}
               onPasswordUpdate={onPasswordUpdate}
             />
-            <ConfirmPasswordInput 
+            <ConfirmPasswordInput
               literal={literal}
               onConfirmPasswordUpdate={onConfirmPasswordUpdate}
             />
@@ -129,12 +129,12 @@ const RegistrationForm = (props: RegistrationProps) => {
               </Grid>
             </Grid>
             {showError()}
-            <FormFooter/>
+            <FormFooter />
           </form>
         </FormContainer>
       </Container>
     </ThemeProvider>
-  );
-};
+  )
+}
 
-export default RegistrationForm;
+export default RegistrationForm

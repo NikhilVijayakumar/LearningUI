@@ -3,16 +3,9 @@
 import { ReactNode } from 'react'
 
 type User = {
-  id: number
-  email: string
-  firstName: string
-  lastName: string
-  role: string
   token: string
-  createdDate: string
-  createdBy: string
-  updatedDate: string
-  updatedBy: string
+  userName: string
+  email: string
 }
 
 export type AuthUser = User | null

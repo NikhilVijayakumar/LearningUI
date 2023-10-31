@@ -1,17 +1,20 @@
-import { registrationApi as api } from '../repo/remote/registrationApi';
+import { registrationApi as api } from '../repo/remote/registrationApi'
 import {
-  RegistrationResponse, 
-  RegistrationState, 
-  RegistrationEmailState, 
-  RegistrationPasswordState} from '../repo/data/registrationData'; 
-import { useState } from 'react';
+  RegistrationResponse,
+  RegistrationState,
+  RegistrationEmailState,
+  RegistrationPasswordState,
+} from '../repo/data/registrationData'
+import { useState } from 'react'
 
-import { HttpStatusCode } from '../../../common/repo/HttpStatusCode';
-import { StateType } from '../../../common/utils/AppState';
-import useStatusMessage from '../../../common/repo/useStatusMessage';
+import { HttpStatusCode } from '../../../common/repo/HttpStatusCode'
+import { StateType } from '../../../common/utils/AppState'
+import useStatusMessage from '../../../common/repo/useStatusMessage'
 
 const useRegistration = (literal: Record<string, string>) => {
-  const [appstate, setAppState] = useState<RegistrationState<RegistrationResponse>>({
+  const [appstate, setAppState] = useState<
+    RegistrationState<RegistrationResponse>
+  >({
     state: StateType.INIT,
     isError: false,
     isSuccess: false,
@@ -22,69 +25,68 @@ const useRegistration = (literal: Record<string, string>) => {
     emailValid: false,
     password: '',
     passwordValid: false,
-    userName: '', 
+    userName: '',
     confirmPassword: '',
     confirmPasswordValid: false,
-  });
+  })
 
-  
   const setState = (
     emailState: RegistrationEmailState | null,
     passwordState: RegistrationPasswordState | null,
     userName: string | null,
-    confirmPassword: string | null
+    confirmPassword: string | null,
   ) => {
     if (emailState) {
-      console.log('emailState', emailState);
+      console.log('emailState', emailState)
       setAppState((prevState) => ({
         ...prevState,
         email: emailState.email,
         emailValid: emailState.emailValid,
-      }));
+      }))
     }
     if (passwordState) {
-      console.log('passwordState', passwordState);
+      console.log('passwordState', passwordState)
       setAppState((prevState) => ({
         ...prevState,
         password: passwordState.password,
         passwordValid: passwordState.passwordValid,
-      }));
+      }))
     }
     if (userName !== null) {
       setAppState((prevState) => ({
         ...prevState,
-        userName, 
-      }));
+        userName,
+      }))
     }
     if (confirmPassword !== null) {
       setAppState((prevState) => ({
         ...prevState,
         confirmPassword,
-      }));
+      }))
     }
-  };
+  }
 
   const handleRegistration = async () => {
     if (!appstate.emailValid) {
-      return;
+      return
     }
     if (!appstate.passwordValid) {
-      return;
+      return
     }
 
     const request = {
-      userName: appstate.userName, 
+      userName: appstate.userName,
       email: appstate.email,
       password: appstate.password,
-    };
+    }
 
     setAppState((prevState) => ({
       ...prevState,
       state: StateType.LOADING,
-    }));
+    }))
 
     try {
-      const response = await api(request, literal);
+      const response = await api(request, literal)
       if (
         response.isSuccess &&
         response.data !== null &&
@@ -97,7 +99,7 @@ const useRegistration = (literal: Record<string, string>) => {
           status: response.status,
           statusMessage: useStatusMessage(response.status, literal),
           response: response.data!!,
-        }));
+        }))
       } else {
         setAppState((prevState) => ({
           ...prevState,
@@ -105,7 +107,7 @@ const useRegistration = (literal: Record<string, string>) => {
           isError: true,
           status: response.status,
           statusMessage: useStatusMessage(response.status, literal),
-        }));
+        }))
       }
     } catch (error) {
       setAppState((prevState) => ({
@@ -114,15 +116,15 @@ const useRegistration = (literal: Record<string, string>) => {
         isError: true,
         status: HttpStatusCode.INTERNET_ERROR,
         statusMessage: useStatusMessage(HttpStatusCode.INTERNET_ERROR, literal),
-      }));
+      }))
     }
-  };
+  }
 
   return {
     appstate,
     setState,
     handleRegistration,
-  };
-};
+  }
+}
 
-export default useRegistration;
+export default useRegistration

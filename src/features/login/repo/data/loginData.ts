@@ -15,14 +15,15 @@ export type LoginRequest = {
 export type LoginEmailState = EmailState
 export type LoginPasswordState = PasswordState
 
-export interface LoginState<LoginResponse>
+export interface LoginState<AuthUser>
   extends EmailState,
     PasswordState,
-    AppState<LoginResponse> {}
+    AppState<AuthUser> {}
 
-export type LoginResponse = {
-  message: string
-  user: AuthUser
+export interface LoginResponse {
+  data: {
+    user: AuthUser
+  }
 }
 
 export interface LoginProps {

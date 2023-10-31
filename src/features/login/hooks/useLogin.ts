@@ -1,6 +1,5 @@
 import { loginApi as api } from '../repo/remote/loginApi'
-import {
-  LoginResponse,
+import {  
   LoginState,
   LoginEmailState,
   LoginPasswordState,
@@ -9,9 +8,10 @@ import { useState } from 'react'
 import { HttpStatusCode } from '../../../common/repo/HttpStatusCode'
 import { StateType } from '../../../common/utils/AppState'
 import useStatusMessage from '../../../common/repo/useStatusMessage'
+import { AuthUser } from '../../../common/auth/authData'
 
 const useLogin = (literal: Record<string, string>) => {
-  const [appstate, setAppState] = useState<LoginState<LoginResponse>>({
+  const [appstate, setAppState] = useState<LoginState<AuthUser>>({
     state: StateType.INIT,
     isError: false,
     isSuccess: false,
@@ -28,16 +28,14 @@ const useLogin = (literal: Record<string, string>) => {
     emailState: LoginEmailState | null,
     passwordState: LoginPasswordState | null,
   ) => {
-    if (emailState) {
-      console.log('emailState', emailState)
+    if (emailState) {      
       setAppState((prevState) => ({
         ...prevState,
         email: emailState.email,
         emailValid: emailState.emailValid,
       }))
     }
-    if (passwordState) {
-      console.log('passwordState', passwordState)
+    if (passwordState) {      
       setAppState((prevState) => ({
         ...prevState,
         password: passwordState.password,
@@ -70,15 +68,17 @@ const useLogin = (literal: Record<string, string>) => {
         response.data !== null &&
         response.data !== undefined
       ) {
+        console.log('Login Success', response.data)
         setAppState((prevState) => ({
           ...prevState,
           state: StateType.COMPLETED,
           isSuccess: true,
           status: response.status,
           statusMessage: useStatusMessage(response.status, literal),
-          response: response.data!!,
+          data: response.data!!.data.user,
         }))
       } else {
+        console.log('else Login Failed')
         setAppState((prevState) => ({
           ...prevState,
           state: StateType.COMPLETED,
@@ -88,6 +88,7 @@ const useLogin = (literal: Record<string, string>) => {
         }))
       }
     } catch (error) {
+      console.log('catch Login Failed')
       setAppState((prevState) => ({
         ...prevState,
         state: StateType.COMPLETED,
