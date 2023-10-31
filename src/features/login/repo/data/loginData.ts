@@ -28,7 +28,7 @@ export interface LoginResponse {
 
 export interface LoginProps {
   literal: Record<string, string>
-  appstate: LoginState<LoginResponse>
+  appstate: LoginState<AuthUser>
   handleLogin: () => Promise<void>
   setState: (
     emailState: LoginEmailState | null,

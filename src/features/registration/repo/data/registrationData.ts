@@ -50,6 +50,6 @@ export interface RegistrationProps {
     emailState: RegistrationEmailState | null,
     passwordState: RegistrationPasswordState | null,
     userName: string | null,
-    confirmPasswordState: RegistrationConfirmPasswordState | null,
+    confirmPassword: string | null,
   ) => void
 }

@@ -98,7 +98,7 @@ const useRegistration = (literal: Record<string, string>) => {
           isSuccess: true,
           status: response.status,
           statusMessage: useStatusMessage(response.status, literal),
-          response: response.data!!,
+          data: response.data!!,
         }))
       } else {
         setAppState((prevState) => ({

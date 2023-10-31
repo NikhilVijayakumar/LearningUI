@@ -45,7 +45,7 @@ const LoginForm = (props: LoginProps) => {
   useEffect(() => {
     if (appstate.isSuccess && appstate.data) {
       console.log('Login success', appstate.data)
-      let user = appstate.data.user
+      let user = appstate.data
       setUser(user)
       navigate(UrlList.TOPIC)
     } else if (appstate.isError) {

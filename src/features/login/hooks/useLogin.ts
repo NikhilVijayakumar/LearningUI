@@ -1,5 +1,5 @@
 import { loginApi as api } from '../repo/remote/loginApi'
-import {  
+import {
   LoginState,
   LoginEmailState,
   LoginPasswordState,
@@ -28,14 +28,14 @@ const useLogin = (literal: Record<string, string>) => {
     emailState: LoginEmailState | null,
     passwordState: LoginPasswordState | null,
   ) => {
-    if (emailState) {      
+    if (emailState) {
       setAppState((prevState) => ({
         ...prevState,
         email: emailState.email,
         emailValid: emailState.emailValid,
       }))
     }
-    if (passwordState) {      
+    if (passwordState) {
       setAppState((prevState) => ({
         ...prevState,
         password: passwordState.password,
