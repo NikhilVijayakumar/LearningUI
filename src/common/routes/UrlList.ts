@@ -5,6 +5,7 @@ export enum UrlList {
   HOME = '/home',
   LOGIN = '/login',
   EXAM = '/exam',
-  TOPIC = '/topic',
+  TOPIC = '/topics',
   QUIZ = '/quiz',
+  REGISTRATION = '/register',
 }

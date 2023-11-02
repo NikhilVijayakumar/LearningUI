@@ -21,6 +21,7 @@ import LegendToggleIcon from '@mui/icons-material/LegendToggle'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import RestartAltIcon from '@mui/icons-material/RestartAlt'
 import IconButton from '@mui/material/IconButton'
+import FormFooter from '../../../../common/components/form/FormFooter'
 
 export default function QuizView({
   appstate,
@@ -215,5 +216,10 @@ export default function QuizView({
       appstate.quiz,
     ])
   }
-  return <>{renderedContent}</>
+  return (
+    <>
+      {renderedContent}
+      <FormFooter />
+    </>
+  )
 }
