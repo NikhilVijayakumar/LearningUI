@@ -1,12 +1,13 @@
 //path:- src/features/quiz/hooks/useQuiz.ts
 
-import { getQuiz as api } from '../repo/remote/quizAPI'
+import { getQuiz, saveResult } from '../repo/remote/quizAPI'
 import {
   QuizTopic,
   QuizState,
   QuizResponse,
   Quiz,
   QuizRequest,
+  ExamResultRequest,
 } from '../repo/data/quizData'
 import { useState } from 'react'
 import { HttpStatusCode } from '../../../common/repo/HttpStatusCode'
@@ -17,6 +18,8 @@ import { shuffleArray } from '../../../common/utils/arrayUtils'
 
 const useQuiz = (literal: Record<string, string>) => {
   const [appstate, setAppState] = useState<QuizState<Quiz>>({
+    topic: '',
+    type: '',
     state: StateType.INIT,
     isError: false,
     isSuccess: false,
@@ -30,13 +33,21 @@ const useQuiz = (literal: Record<string, string>) => {
     correctAnswers: 0,
     chapterResults: [],
     eventType: EventType.IDLE,
+    authToken: '',
   })
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     appstate.selectedAnswer = (event.target as HTMLInputElement).value
   }
 
-  const handleSubmit = () => {
+  const setAuthToken = (authToken: string) => {
+    setAppState((prevState) => ({
+      ...prevState,
+      authToken: authToken,
+    }))
+  }
+
+  const handleSubmit = async () => {
     let answer = appstate.correctAnswers
     let chapterName = appstate.quiz[appstate.currentQuestionIndex].chaptername
     let chapterResult = appstate.chapterResults.find(
@@ -73,11 +84,52 @@ const useQuiz = (literal: Record<string, string>) => {
         eventType: EventType.NEXT,
       }))
     } else {
+      const request: ExamResultRequest = {
+        data: {
+          topic: appstate.topic,
+          type: appstate.type,
+          chapterResults: appstate.chapterResults,
+          totalQuestions: appstate.quiz.length,
+          correctAnswers: answer,
+        },
+      }
+      await examResult(request, answer)
+    }
+  }
+
+  const examResult = async (request: ExamResultRequest, answer: number) => {
+    setAppState((prevState) => ({
+      ...prevState,
+      state: StateType.LOADING,
+    }))
+    try {
+      const response = await saveResult(literal, request, appstate.authToken)
+      if (response.isSuccess) {
+        setAppState((prevState) => ({
+          ...prevState,
+          state: StateType.COMPLETED,
+          correctAnswers: answer,
+          validationError: false,
+          eventType: EventType.COMPLETED,
+        }))
+      } else {
+        setAppState((prevState) => ({
+          ...prevState,
+          state: StateType.COMPLETED,
+          eventType: EventType.COMPLETED,
+          isError: true,
+          status: response.status,
+          statusMessage: useStatusMessage(response.status, literal),
+        }))
+      }
+    } catch (error) {
       setAppState((prevState) => ({
         ...prevState,
-        correctAnswers: answer,
-        validationError: false,
+        state: StateType.COMPLETED,
         eventType: EventType.COMPLETED,
+        isError: true,
+        status: HttpStatusCode.INTERNET_ERROR,
+        statusMessage: useStatusMessage(HttpStatusCode.INTERNET_ERROR, literal),
       }))
     }
   }
@@ -101,10 +153,12 @@ const useQuiz = (literal: Record<string, string>) => {
     setAppState((prevState) => ({
       ...prevState,
       state: StateType.LOADING,
+      topic: quizdata.name,
+      type: quizdata.type,
     }))
     try {
       const request: QuizRequest = { topic: quizdata.name, type: quizdata.type }
-      const response = await api(literal, request)
+      const response = await getQuiz(literal, request)
       if (response.isSuccess && response.data) {
         const quizResponse: QuizResponse = response.data
         const uniqueChapterNames = [
@@ -155,6 +209,7 @@ const useQuiz = (literal: Record<string, string>) => {
     handleRadioChange,
     handleSubmit,
     handleRestart,
+    setAuthToken,
   }
 }
 

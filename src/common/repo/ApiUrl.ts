@@ -3,6 +3,7 @@ const URL: Record<string, string> = {
   TOPICS_ENDPOINT: 'topics',
   QUIZ_ENDPOINT: 'quiz',
   REGISTRATION_ENDPOINT: 'register',
+  EXAM_RESULT_ENDPOINT: 'results',
 }
 
 export default URL

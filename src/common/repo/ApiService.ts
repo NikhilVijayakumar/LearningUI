@@ -16,12 +16,19 @@ let BASE_URL = import.meta.env.VITE_REACT_APP_HOST
 class ApiService {
   private static instance: ApiService
 
-  private constructor(private literal: Record<string, string>) {}
+  private constructor(
+    private literal: Record<string, string>,
+    private authToken?: string,
+  ) {}
 
-  public static getInstance(literal: Record<string, string>): ApiService {
+  public static getInstance(
+    literal: Record<string, string>,
+    authToken?: string,
+  ): ApiService {
     if (!ApiService.instance) {
-      ApiService.instance = new ApiService(literal)
+      ApiService.instance = new ApiService(literal, authToken)
     }
+    this.instance.authToken = authToken
     return ApiService.instance
   }
 
@@ -29,6 +36,12 @@ class ApiService {
     config: AxiosRequestConfig,
   ): Promise<ServerResponse<T>> {
     try {
+      if (this.authToken) {
+        config.headers = {
+          ...config.headers,
+          Authorization: `Bearer ${this.authToken}`,
+        }
+      }
       const response: AxiosResponse<T> = await axios(config)
       const responseSucess: ResponseSucess<T> = {
         status: response.status,
