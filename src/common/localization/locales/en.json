@@ -1,7 +1,10 @@
 {
-  "sign_in": "Sign in",
+  "sign_up": "Sign Up",
+  "sign_in": "Sign In",
   "email": "Email",
   "password": "Password",
+  "user_name": "User Name",
+  "confirm_password": "Confirm Password",
   "invalid_email_format": "Invalid email format!",
   "required_email": "Email is required",
   "invalid_password": "Password must be at least 8 characters and include a combination of uppercase and lowercase letters, numbers or symbols. ",

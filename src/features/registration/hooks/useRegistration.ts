@@ -1,17 +1,20 @@
-import { loginApi as api } from '../repo/remote/loginApi'
+import { registrationApi as api } from '../repo/remote/registrationApi'
 import {
-  LoginState,
-  LoginEmailState,
-  LoginPasswordState,
-} from '../repo/data/loginData'
+  RegistrationResponse,
+  RegistrationState,
+  RegistrationEmailState,
+  RegistrationPasswordState,
+} from '../repo/data/registrationData'
 import { useState } from 'react'
+
 import { HttpStatusCode } from '../../../common/repo/HttpStatusCode'
 import { StateType } from '../../../common/utils/AppState'
 import useStatusMessage from '../../../common/repo/useStatusMessage'
-import { AuthUser } from '../../../common/auth/authData'
 
-const useLogin = (literal: Record<string, string>) => {
-  const [appstate, setAppState] = useState<LoginState<AuthUser>>({
+const useRegistration = (literal: Record<string, string>) => {
+  const [appstate, setAppState] = useState<
+    RegistrationState<RegistrationResponse>
+  >({
     state: StateType.INIT,
     isError: false,
     isSuccess: false,
@@ -22,13 +25,19 @@ const useLogin = (literal: Record<string, string>) => {
     emailValid: false,
     password: '',
     passwordValid: false,
+    userName: '',
+    confirmPassword: '',
+    confirmPasswordValid: false,
   })
 
   const setState = (
-    emailState: LoginEmailState | null,
-    passwordState: LoginPasswordState | null,
+    emailState: RegistrationEmailState | null,
+    passwordState: RegistrationPasswordState | null,
+    userName: string | null,
+    confirmPassword: string | null,
   ) => {
     if (emailState) {
+      console.log('emailState', emailState)
       setAppState((prevState) => ({
         ...prevState,
         email: emailState.email,
@@ -36,22 +45,37 @@ const useLogin = (literal: Record<string, string>) => {
       }))
     }
     if (passwordState) {
+      console.log('passwordState', passwordState)
       setAppState((prevState) => ({
         ...prevState,
         password: passwordState.password,
         passwordValid: passwordState.passwordValid,
       }))
     }
+    if (userName !== null) {
+      setAppState((prevState) => ({
+        ...prevState,
+        userName,
+      }))
+    }
+    if (confirmPassword !== null) {
+      setAppState((prevState) => ({
+        ...prevState,
+        confirmPassword,
+      }))
+    }
   }
 
-  const handleLogin = async () => {
+  const handleRegistration = async () => {
     if (!appstate.emailValid) {
       return
     }
     if (!appstate.passwordValid) {
       return
     }
+
     const request = {
+      userName: appstate.userName,
       email: appstate.email,
       password: appstate.password,
     }
@@ -68,17 +92,15 @@ const useLogin = (literal: Record<string, string>) => {
         response.data !== null &&
         response.data !== undefined
       ) {
-        console.log('Login Success', response.data)
         setAppState((prevState) => ({
           ...prevState,
           state: StateType.COMPLETED,
           isSuccess: true,
           status: response.status,
           statusMessage: useStatusMessage(response.status, literal),
-          data: response.data!!.data.user,
+          data: response.data!!,
         }))
       } else {
-        console.log('else Login Failed')
         setAppState((prevState) => ({
           ...prevState,
           state: StateType.COMPLETED,
@@ -88,7 +110,6 @@ const useLogin = (literal: Record<string, string>) => {
         }))
       }
     } catch (error) {
-      console.log('catch Login Failed')
       setAppState((prevState) => ({
         ...prevState,
         state: StateType.COMPLETED,
@@ -102,8 +123,8 @@ const useLogin = (literal: Record<string, string>) => {
   return {
     appstate,
     setState,
-    handleLogin,
+    handleRegistration,
   }
 }
 
-export default useLogin
+export default useRegistration

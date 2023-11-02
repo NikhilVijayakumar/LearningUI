@@ -1,6 +1,8 @@
+// src/features/registration/view/components/RegistrationForm.tsx
+
 import React from 'react'
 import LoadingButton from '@mui/lab/LoadingButton'
-import LoginIcon from '@mui/icons-material/Login'
+import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import LockOutlinedIcon from '@mui/icons-material/LockPersonOutlined'
 import { useNavigate } from 'react-router-dom'
 import { ThemeProvider } from '@mui/material/styles'
@@ -12,64 +14,74 @@ import Box from '@mui/material/Box'
 import { ThemeContext } from '../../../../common/theme/themeContext'
 import { StateType } from '../../../../common/utils/AppState'
 import FormHeader from '../../../../common/components/form/FormHeader'
-import FormFooter from '../../../../common/components/form/FormFooter'
 import EmailInput from '../../../../common/components/form/EmailInput'
 import PasswordInput from '../../../../common/components/form/PasswordInput'
 import ThemeToggle from '../../../../common/components/theme/ThemeToggle'
 import Alert from '@mui/material/Alert'
 import {
-  LoginProps,
-  LoginEmailState,
-  LoginPasswordState,
-} from '../../repo/data/loginData'
+  RegistrationProps,
+  RegistrationEmailState,
+  RegistrationPasswordState,
+  RegistrationConfirmPasswordState,
+} from '../../repo/data/registrationData'
 import { useEffect } from 'react'
 import FormContainer from '../../../../common/components/form/FormContainer'
 import { defaultFormStyle } from '../../../../common/components/form/style/FormStyle'
 import { UrlList } from '../../../../common/routes/UrlList'
-import Button from '@mui/material/Button'
-import HowToRegIcon from '@mui/icons-material/HowToReg'
+import UserNameInput from '../../../../common/components/form/UserNameInput'
+import ConfirmPasswordInput from '../../../../common/components/form/ConfirmPasswordInput'
+import FormFooter from '../../../../common/components/form/FormFooter'
 
-const LoginForm = (props: LoginProps) => {
+const RegistrationForm = (props: RegistrationProps) => {
   const navigate = useNavigate()
-  const { literal, appstate, handleLogin, setState, setUser } = props
+  const { literal, appstate, handleRegistration, setState } = props
   const themeContext = React.useContext(ThemeContext)
 
-  const onEmailUpdate = (emailState: LoginEmailState) => {
-    setState(emailState, null)
+  const onEmailUpdate = (emailState: RegistrationEmailState) => {
+    setState(emailState, null, null, null)
   }
 
-  const onPasswordUpdate = (passwordState: LoginPasswordState) => {
-    setState(null, passwordState)
+  const onPasswordUpdate = (passwordState: RegistrationPasswordState) => {
+    setState(null, passwordState, null, null)
+  }
+
+  const onUserNameUpdate = (userName: string) => {
+    setState(null, null, userName, null)
+  }
+
+  const onConfirmPasswordUpdate = (
+    confirmPasswordState: RegistrationConfirmPasswordState,
+  ) => {
+    setState(null, null, null, confirmPasswordState)
   }
 
   useEffect(() => {
     if (appstate.isSuccess && appstate.data) {
-      console.log('Login success', appstate.data)
-      let user = appstate.data
-      setUser(user)
-      navigate(UrlList.TOPIC)
+      console.log('Registration success', appstate.data)
+      navigate(UrlList.LOGIN)
     } else if (appstate.isError) {
       showError()
     }
-  }, [appstate.data, appstate.isError, appstate.isSuccess])
+  }, [appstate])
 
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    await handleLogin()
+    await handleRegistration()
+
+    if (appstate.isSuccess && appstate.data) {
+      console.log('Registration success', appstate.data)
+      navigate(UrlList.LOGIN)
+    }
   }
 
   const showError = () => {
     if (appstate.isError) {
       return (
         <Box>
-          <Alert severity="error">{appstate.statusMessage}</Alert>{' '}
+          <Alert severity="error">{appstate.statusMessage}</Alert>
         </Box>
       )
     }
-  }
-
-  const handleRegisterClick = () => {
-    navigate(UrlList.REGISTRATION)
   }
 
   return (
@@ -79,19 +91,24 @@ const LoginForm = (props: LoginProps) => {
         <FormContainer sx={defaultFormStyle}>
           <ThemeToggle themeContext={themeContext} />
           <form onSubmit={handleFormSubmit}>
-            <FormHeader
-              icon={<LockOutlinedIcon />}
-              title={literal['sign_in']}
-            />
+            <FormHeader icon={<PersonAddIcon />} title={literal['sign_up']} />
 
+            <UserNameInput
+              literal={literal}
+              onUserNameUpdate={onUserNameUpdate}
+            />
             <EmailInput literal={literal} onEmailUpdate={onEmailUpdate} />
             <PasswordInput
               literal={literal}
               onPasswordUpdate={onPasswordUpdate}
             />
+            <ConfirmPasswordInput
+              literal={literal}
+              onConfirmPasswordUpdate={onConfirmPasswordUpdate}
+            />
             <Grid
               container
-              justifyContent="space-between"
+              justifyContent="end"
               alignItems="center"
               sx={{
                 marginBottom: '16px',
@@ -99,25 +116,15 @@ const LoginForm = (props: LoginProps) => {
               }}
             >
               <Grid item>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  startIcon={<HowToRegIcon />}
-                  onClick={handleRegisterClick}
-                >
-                  <span>{literal['sign_up']}</span>
-                </Button>
-              </Grid>
-              <Grid item>
                 <LoadingButton
                   color="primary"
                   type="submit"
                   loading={appstate.state === StateType.LOADING}
                   loadingPosition="start"
-                  startIcon={<LoginIcon />}
+                  startIcon={<LockOutlinedIcon />}
                   variant="contained"
                 >
-                  <span>{literal['sign_in']}</span>
+                  <span>{literal['sign_up']}</span>
                 </LoadingButton>
               </Grid>
             </Grid>
@@ -130,4 +137,4 @@ const LoginForm = (props: LoginProps) => {
   )
 }
 
-export default LoginForm
+export default RegistrationForm
