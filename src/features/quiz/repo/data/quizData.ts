@@ -34,7 +34,21 @@ export interface QuizResponse {
   status: string
 }
 
+export type ExamResultRequest = {
+  data: {
+    topic: string
+    type: string
+    chapterResults: ChapterResult[]
+    totalQuestions: number
+    correctAnswers: number
+  }
+}
+
+export type ExamResultResponse = ExamResultRequest
+
 export interface QuizState<Quiz> extends AppState<Quiz> {
+  topic: string
+  type: string
   validationError: boolean
   quiz: Quiz
   currentQuestionIndex: number
@@ -42,6 +56,7 @@ export interface QuizState<Quiz> extends AppState<Quiz> {
   correctAnswers: number
   chapterResults: ChapterResult[]
   eventType: EventType
+  authToken: string
 }
 
 export interface QuizViewProps {

@@ -214,6 +214,7 @@ export default function QuizView({
       appstate.validationError,
       appstate.correctAnswers,
       appstate.quiz,
+      appstate.authToken,
     ])
   }
   return (

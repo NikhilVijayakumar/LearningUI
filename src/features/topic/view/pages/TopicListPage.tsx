@@ -13,7 +13,7 @@ const TopicListPage: React.FC = () => {
   if (user === null || user === undefined) {
     console.log('unauthorized token is null')
     navigate(UrlList.LOGIN)
-  } 
+  }
   return (
     <div>
       <TopicList appstate={appstate} literal={literal} gotoExam={gotoExam} />
