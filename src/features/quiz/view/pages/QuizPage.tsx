@@ -6,7 +6,7 @@ import { useLanguage } from '../../../../common/localization/LanguageContext'
 import { useAuth } from '../../../../common/auth/authContext'
 import { UrlList } from '../../../../common/routes/UrlList'
 import { useNavigate } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 
 const QuizPage: React.FC = () => {
   const { literal } = useLanguage()

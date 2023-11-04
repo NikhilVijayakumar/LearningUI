@@ -21,15 +21,13 @@ import Alert from '@mui/material/Alert'
 import {
   RegistrationProps,
   RegistrationEmailState,
-  RegistrationPasswordState,
-  RegistrationConfirmPasswordState,
+  RegistrationPasswordState,  
 } from '../../repo/data/registrationData'
 import { useEffect } from 'react'
 import FormContainer from '../../../../common/components/form/FormContainer'
 import { defaultFormStyle } from '../../../../common/components/form/style/FormStyle'
 import { UrlList } from '../../../../common/routes/UrlList'
 import UserNameInput from '../../../../common/components/form/UserNameInput'
-import ConfirmPasswordInput from '../../../../common/components/form/ConfirmPasswordInput'
 import FormFooter from '../../../../common/components/form/FormFooter'
 
 const RegistrationForm = (props: RegistrationProps) => {
@@ -50,7 +48,7 @@ const RegistrationForm = (props: RegistrationProps) => {
   }
 
   const onConfirmPasswordUpdate = (
-    confirmPasswordState: RegistrationConfirmPasswordState,
+    confirmPasswordState: RegistrationPasswordState,
   ) => {
     setState(null, null, null, confirmPasswordState)
   }
@@ -102,9 +100,9 @@ const RegistrationForm = (props: RegistrationProps) => {
               literal={literal}
               onPasswordUpdate={onPasswordUpdate}
             />
-            <ConfirmPasswordInput
+            <PasswordInput
               literal={literal}
-              onConfirmPasswordUpdate={onConfirmPasswordUpdate}
+              onPasswordUpdate={onConfirmPasswordUpdate}
             />
             <Grid
               container
