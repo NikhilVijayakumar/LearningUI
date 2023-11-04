@@ -11,7 +11,7 @@ export const MarkLineChart: React.FC<MarkLineChartProps> = ({
   results,
   passThreshold,
 }) => {
-  const xdata = results.map((result, index) => index + 1)
+  const xdata = results.map((result, index) => index + 1+result.totalQuestions-result.totalQuestions) 
   const passData = new Array(results.length).fill(passThreshold)
   const markData = results.map(
     (result) => (result.correctAnswers / result.totalQuestions) * 100,
