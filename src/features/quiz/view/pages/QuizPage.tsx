@@ -21,7 +21,7 @@ const QuizPage: React.FC = () => {
   if (user === null || user === undefined) {
     console.log('unauthorized token is null')
     navigate(UrlList.LOGIN)
-  } 
+  }
   return (
     <div>
       <QuizView
