@@ -9,8 +9,8 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "format": "prettier --write .",
-    "pm2:stop": "pm2 delete skil-sage-frontend",
-    "deploy": "npm i && npm run build &&  pm2 serve dist/ 3000 --name 'skil-sage-frontend'"
+    "stop-server": "pm2 delete skil-sage-frontend",
+    "start-server": "npm i && npm run build &&  pm2 serve dist/ 3000 --name 'skil-sage-frontend'"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
