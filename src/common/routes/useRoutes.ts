@@ -1,6 +1,6 @@
 //path src/common/routes/useRoutes.ts
 
-import Home from '../../features/home/view/pages/HomePage'
+
 import Login from '../../features/login/view/pages/LoginPage'
 import Registration from '../../features/registration/view/pages/RegistrationPage.tsx'
 import Topic from '../../features/topic/view/pages/TopicListPage'
@@ -14,8 +14,6 @@ const useRoutes = (path: string) => {
       return Login as () => JSX.Element
     case UrlList.REGISTRATION:
       return Registration as () => JSX.Element
-    case UrlList.HOME:
-      return Home as () => JSX.Element
     case UrlList.TOPIC:
       return Topic as () => JSX.Element
     case UrlList.EXAM:
