@@ -37,10 +37,6 @@ export type RegistrationResponse = {
   user: AuthUser
 }
 
-export interface RegistrationConfirmPasswordState {
-  confirmPassword: string
-  confirmPasswordValid: boolean
-}
 
 export interface RegistrationProps {
   literal: Record<string, string>
@@ -50,6 +46,6 @@ export interface RegistrationProps {
     emailState: RegistrationEmailState | null,
     passwordState: RegistrationPasswordState | null,
     userName: string | null,
-    confirmPassword: string | null,
+    confirmPassword: RegistrationPasswordState | null,
   ) => void
 }

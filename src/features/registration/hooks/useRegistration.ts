@@ -34,7 +34,7 @@ const useRegistration = (literal: Record<string, string>) => {
     emailState: RegistrationEmailState | null,
     passwordState: RegistrationPasswordState | null,
     userName: string | null,
-    confirmPassword: string | null,
+    confirmPassword: RegistrationPasswordState | null,
   ) => {
     if (emailState) {
       console.log('emailState', emailState)
@@ -61,7 +61,8 @@ const useRegistration = (literal: Record<string, string>) => {
     if (confirmPassword !== null) {
       setAppState((prevState) => ({
         ...prevState,
-        confirmPassword,
+        confirmPassword: confirmPassword.password,
+        confirmPasswordValid: confirmPassword.passwordValid,
       }))
     }
   }
