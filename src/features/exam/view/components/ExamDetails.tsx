@@ -14,7 +14,6 @@ import { ExamDetailsProps } from '../../repo/data/examData'
 import { useNavigate } from 'react-router-dom'
 import { UrlList } from '../../../../common/routes/UrlList'
 import examIcon from '../../../../assets/exam_icon.png'
-import FormFooter from '../../../../common/components/form/FormFooter'
 
 export default function ExamDetails({ literal }: ExamDetailsProps) {
   const { name, types } = useParams()
@@ -86,7 +85,6 @@ export default function ExamDetails({ literal }: ExamDetailsProps) {
             {literal['start_exam']}
           </Button>
         </Box>
-        <FormFooter />
       </form>
     </Box>
   )

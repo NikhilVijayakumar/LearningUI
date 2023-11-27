@@ -12,7 +12,6 @@ import Box from '@mui/material/Box'
 import { ThemeContext } from '../../../../common/theme/themeContext'
 import { StateType } from '../../../../common/utils/AppState'
 import FormHeader from '../../../../common/components/form/FormHeader'
-import FormFooter from '../../../../common/components/form/FormFooter'
 import EmailInput from '../../../../common/components/form/EmailInput'
 import PasswordInput from '../../../../common/components/form/PasswordInput'
 import ThemeToggle from '../../../../common/components/theme/ThemeToggle'
@@ -122,7 +121,6 @@ const LoginForm = (props: LoginProps) => {
               </Grid>
             </Grid>
             {showError()}
-            <FormFooter />
           </form>
         </FormContainer>
       </Container>

@@ -9,7 +9,6 @@ import { useState, useEffect } from 'react'
 import { StateType } from '../../../../common/utils/AppState'
 import { useNavigate } from 'react-router-dom'
 import { UrlList } from '../../../../common/routes/UrlList'
-import FormFooter from '../../../../common/components/form/FormFooter'
 
 export default function TopicList({ appstate, literal }: TopicListProps) {
   const [renderedContent, setRenderedContent] = useState<JSX.Element | null>(
@@ -77,7 +76,6 @@ export default function TopicList({ appstate, literal }: TopicListProps) {
   return (
     <>
       {renderedContent}
-      <FormFooter />
     </>
   )
 }

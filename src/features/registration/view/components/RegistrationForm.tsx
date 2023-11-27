@@ -28,7 +28,6 @@ import FormContainer from '../../../../common/components/form/FormContainer'
 import { defaultFormStyle } from '../../../../common/components/form/style/FormStyle'
 import { UrlList } from '../../../../common/routes/UrlList'
 import UserNameInput from '../../../../common/components/form/UserNameInput'
-import FormFooter from '../../../../common/components/form/FormFooter'
 
 const RegistrationForm = (props: RegistrationProps) => {
   const navigate = useNavigate()
@@ -127,7 +126,6 @@ const RegistrationForm = (props: RegistrationProps) => {
               </Grid>
             </Grid>
             {showError()}
-            <FormFooter />
           </form>
         </FormContainer>
       </Container>
